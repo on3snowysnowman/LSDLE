@@ -1,0 +1,7 @@
+{
+    "application_window_title" : "LSDLE",
+    "width" : 500,
+    "height" : 500,
+    "fullscreen" : true,
+     "background_color" : [25, 25, 45]
+}

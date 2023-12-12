@@ -1,0 +1,468 @@
+This is an in depth explanation of the various components and uses of the 
+LSDLE.
+
+Table of Contents:
+
+    1 : Overview
+    2 : Engine Configuration
+    3 : Engine Setup
+    4 : Engine Behavior
+    5 : Colors
+    6 : Input Handling
+    7 : TextureHandler
+    8 : Text Rendering
+    9 : Sprite Rendering
+    10 : Menus
+    11 : Menu Handler
+    12 : Menu Tools
+    13 : Debug
+    14 : Conclusion
+
+
+1 : OVERVIEW ------------------------------------------------------------------
+
+    LSDLE is a lightweight engine designed for rendering text and PNG images, 
+    as well as handling basic user input. It includes various tools for 
+    creating simple menus with modular variables and lists. 
+
+    This text file will explain everything you need to know about the 
+    engine. However, if you have further questions, feel free to email me at : 
+    on3snowysnowman@gmail.com.
+
+    This project is open source, and can be read freely if you would like to 
+    study it. Although changes to the Engine are permitted, please review the 
+    license for further details on the matter.
+
+    The LSDLE is not a very large project at the moment, but in time I believe
+    it can sprout into something much more grand. 
+
+
+2 : ENGINE CONFIGURATION ------------------------------------------------------
+
+    Inside the LSDLE directory, you will find a file named "init_data.json".
+    The init_data.json file controls the way that the window of the application
+    is displayed when running your program. These values can be modified to 
+    change how your program is run, but note that the width and height values
+    have a built in minimum of 500 pixels. This cannot be changed. 
+
+    The application_window_title controls what the name of your application 
+    will be when your program is run. Feel free to change this to anything you
+    like, I don't required the credit to LSDLE to be in the application title. 
+    The width and height control the size of the window, and the fullscreen is
+    whether it is fullscreen or not. The background_color is the rgb values of
+    the background color in the application window. If you modify these values
+    ensure that they are between 0 and 255 and there are exactly 3 values 
+    inside the array.
+
+
+3 : ENGINE SETUP --------------------------------------------------------------
+
+    To set up and use the engine, simply create a class and derive it from the
+    LSDLE itself. To derive from the LSDLE, include the the LSDLE.h file in the
+    include depository. The default constructor for the LSDLE is deleted, and 
+    requires the use of the constructor with a path. This path will be the 
+    exact directory to the LSDLE folder on your computer, where you 
+    installed it previously. It is very important that this directory is 
+    correct, otherwise the program will not function. The LSDLE needs to know 
+    exactly where it resides on your computer.
+    
+    There are two virtual LSDLE methods that should be overridden by your 
+    class : update() and render().
+
+    After deriving from the LSDLE and overriding these two methods, when you
+    are ready to start simulation, call the LSDLE's start() method. This method
+    MUST be called for the engine to function.
+    
+    
+4 : ENGINE BEHAVIOR -----------------------------------------------------------
+
+    The LSDLE simulates at a target framerate of 60 fps. Each frame, the 
+    update() and render() methods are called, the two that your class 
+    overrides. 
+
+    The update() method is where you should put all the components that you 
+    want to be updated each frame. Typically, this consists of any entities
+    you have in the game, etc. Anything that needs a call every frame. 
+    
+    The render() method is where you should put everything that handles 
+    rendering to the screen. 
+
+    Each of these two methods will be called each frame, at a target 60 fps.
+
+    Aside from these two methods, the Engine provides two already created
+    objects : the InputHandler, and TextureHandler. These will be explained 
+    in detail later.
+
+
+5 : COLORS --------------------------------------------------------------------
+
+    The LSDLE supports rendering text with color, which can be utilized through
+    the TextDisplayHandler and ConsoleOutputHandler (Explained later in part
+    8 : Text Rendering). The colors that are supported are as listed:
+
+        - Red
+        - Green
+        - Blue
+        - Orange
+        - Yellow
+        - Purple
+        - White
+        - LightGray
+        - DarkGray
+        - Black
+    
+    The data for these colors are stored under the file "colors.json" in the 
+    LSDLE directory. These colors can be modified here, and you may add any 
+    colors that you wish. The names of these colors in this file are the same
+    that will be used with the TDH and COH. Do note, if you intend to modify or
+    add colors, the rgb values need to be between 0 and 255, and there must 
+    be three integer values followed by the name of the color per each color 
+    item. If this is not the case, the program will crash.
+    
+
+6 : INPUT HANDLING ------------------------------------------------------------
+
+    The LSDLE has a simple input handling class built in for your class to use.
+    It's called the InputHandler (I'm quite the creative genius). By default, 
+    the IH is available to your class since it's derived from the LSDLE. If 
+    you don't intend to build your own input handling class, I highly recommend
+    you to not create a new IH object from the LSDLE library, and 
+    instead share the pointer to the IH object that is inside your derived class
+    to any other component that requires it. By its design, the IH's update()
+    method needs to be called each frame, and this is automatically done so
+    by the LSDLE. If you create a new IH object and pass it to your components
+    expecting it to grab your input, it won't work since it is not being updated.
+    To summarize, the pointer to the already existant IH is available to your
+    class derived from the LSDLE and simply pass that pointer to any component 
+    that needs input handling.
+
+    The IH has a three purposes. 
+    
+    The first is to track "raw" key presses. This is the actual key press data 
+    from the keyboard itself per each frame. For instance, if you pressed the 
+    'a' key down and hold it, the first press will be registered, along with a 
+    short delay before the key is repeated. This behavior is quite useful when 
+    typing, but can be annoying when it comes to inputs like movement input, 
+    where the target behavior is a smooth input stream while the key is 
+    pressed with no delay. To get the raw keys, call the get_raw_keys method,
+    which returns a const reference to the IH's vector of raw keys (resembled
+    as uint32_ts)
+
+    The second purpose is the ability to track if a key is currently pressed
+    in real time. This is when you intend to track exactly when the user is 
+    pressing a key, and precisely when they release it. If there is a specific
+    key you want to check is being pressed, call the is_key_pressed method 
+    with the target key. If you want to get all the keys that are currently
+    pressed, call the get_all_pressed_keys() method. The keys can be 
+    optionally sorted by value using the sort parameter. 
+
+    The last, and most important purpose of the IH, is to set delays for keys
+    that are pressed. This allows you "block" the key from being read as 
+    active until a certain amount of frames have passed. This is useful when
+    navigating the MenuToolLists specifically (More on that later) so that 
+    when the user presses the 's' key to go down, their cursor doesn't shoot
+    down the list immediately because it's being moved 60 times per second. If
+    you assign a 12 frame delay to the key for instance, the cursor will only 
+    move down every 12 frames. To use the behavior for delaying keys, you will 
+    need to check if a key is pressed AND available, rather than just pressed. 
+    Simply use the is_key_pressed_and_available() method to check if a 
+    target key is pressed and available, and if you would like to get all the 
+    keys that are pressed and available, use the 
+    get_all_pressed_and_available_keys() method. To set a delay to a key, use 
+    the set_delay() method. Do note, that the key will need to be delayed each
+    time you want it to be blocked, the set_delay() method isn't a one time 
+    deal (Although this function may be implemented in the future). Each time
+    you register a key is pressed and want it delayed, you will need to do that
+    every time.
+
+
+7 : TEXTUREHANDLER ------------------------------------------------------------
+
+    The TextureHandler is a class that handles the creation of SDL_Textures 
+    from paths to pngs, along with directly drawing these textures to the 
+    screen. Typically, I wouldn't expect a user of the LSDLE to need to use 
+    the TH, but I figured I would explain it since it is one of the two 
+    objects that are already created and available from the derived LSDLE 
+    class. Several of the classes you might use, including the SpriteHandler 
+    and ConsoleOutputHandler required the TextureHandler to be passed as a 
+    pointer. Simply pass the pointer to the TH that is available through your
+    class that derived from LSDLE to these classes when creating them. Other
+    than passing them to these classes, I wouldn't expect you to need to 
+    worry about the TH, unless you plan to create your own rendering system.
+
+8 : TEXT RENDERING ------------------------------------------------------------
+
+    To render text and characters to the screen, there are two routes you can 
+    take. If you don't plan on individually rendering each character to the 
+    screen using your own means, you can skip down to the 
+    ConsoleOutputHandler, which will remove much of the work for you. Do note 
+    that if you use either of these classes, their render() method MUST be
+    called inside your class's render() method for text to be displayed to the 
+    screen.
+
+    TEXT_DISPLAY_HANDLER : 
+    
+    The first route is to use the TextDisplayHandler to primitively draw 
+    characters to the screen each frame at a position. This is the raw class 
+    that handles character output to the screen, and may be used by itself for
+    specific configuration of characters but is typically built on by other
+    classes for ease of outputting to the screen, without needing to worry 
+    about proper spacing and pixel positions of each character and what not. 
+
+    The TDH contains an std::queue of the characters that will be rendered to
+    the screen next render() call, and will be popped off as each of them are 
+    read. This means that calling the TDH's clear() function to clear the
+    screen of text is not recommended since characters are automatically 
+    cleared each frame. The clear() method should only be called if the 
+    inteded purpose is to remove all buffered characters before they are able
+    to be rendered on the next render() call. 
+
+    To add characters to the screen using the TDH, call the add_ch methods. 
+    With the overloaded add_ch method, you can optionally add color to the 
+    character. 
+
+    To add full strings to the screen at a position, use the add_str position.
+    Due note that this method doesn't support text wrapping around the edge of
+    the screen, so if the string goes off screen it will not be rendered.
+
+    CONSOLE_OUTPUT_HANDLER :
+    
+    The second route removes much of the headache of needing to calculate 
+    distance between characters, new lines etc. The ConsoleOutputHandler
+    allows you to add characters to the screen like it would be if you typed
+    them into a console. The COH contains a "cursor" that moves across the
+    screen as you add characters. When the COH detects that a character that
+    you added will go offscreen, it will automatically place it on the next 
+    line. This also works for strings that are added to the COH. It will 
+    render each character until it reaches the end of the screen, and will 
+    continue placing the rest of the string on the next line.
+
+    The COH can be quite useful when needing to print out text that is more 
+    than one line, and it automatically handles the spacing and newlines for 
+    you. If you would like to specifically control where each character is 
+    placed, use the "move_cursor" methods or the modify_cursor_position() 
+    method. It is very important to note that the COH handles the cursor's 
+    position in "character"s, not pixels. So if you wanted to move the cursor
+    6 spaces to the right, it would be the same as pressing the space bar 
+    on your keyboard 6 times, NOT 6 pixels to the right. If this functionality 
+    is what is intended, you should use the TextDisplayHandler to specify 
+    exactly where each character should go.
+
+    The new_line() methods moves the cursor to the next line, beginning at
+    the first character. This can be useful when it's strictly needed to put 
+    text at the beginning of the screen, although if you need your text to line 
+    up in a column, this may not work well. In the future, I would like to 
+    implement some sort of new line system that when called, goes to the next 
+    line but to a ceratin column on the next row instead of always at the 
+    beginning. For now, the way I get around this issue is I will save the 
+    cursor's x position before I start rendering text, then when I want a 
+    newline, use the modify_cursor_position() to increment the cursor's y by 1,
+    then use the move_cursor_x() method to move the cursor's x position to the 
+    original column. That would look something like this :
+
+    {
+        const std::pair<uint16_t, uint16_t> initial_cursor_position 
+            = console_output_handler->get_cursor_position();
+
+        // Render some text 
+
+        // Want to put more text on new line....
+
+        console_output_handler->modfiy_cursor_position(0, 1);
+        console_output_handler->move_cursor_x(initial_cursor_position.first);
+    }
+
+    Other than that, that's everything to the COH. It's pretty simple, but 
+    removes much of the trouble of having to manually place characters on 
+    the screen. 
+
+
+9 : SPRITE RENDERING ---------------------------------------------------------
+
+    Sprite rendering is very simple. The classes for handling this are 
+    the SpriteHandler and Sprite class. 
+
+    SPRITE :
+
+    The Sprite Class contains three members. These being a pointer to the 
+    SDL_Texture and the source and destination SDL_Rects. I don't fully 
+    understand how the SDL_Texture works under the hood, and I you won't 
+    either to use the Engine. From the extent of my knowledge, the Texture
+    contains simple pixel data from a loaded png file. It is important to 
+    note that these textures contain the ENTIRE png file loaded as a 
+    texture, not just the part the sprite resembles. The two other members
+    are the source and destination SDL_Rects. An SDL_Rect is a container of 
+    four integers, those being x, y, w, h. The x and y values resemble the x
+    and y position inside the SDL_Texture, and the w and h resemble the 
+    width and height of the area you want to splice from each Sprite's 
+    SDL_Texture. The destination_data is very similar to the source data.
+    The x and y of the destination_data SDL_Rect resembles the x and 
+    y position on the actual screen where the Sprite should be resembled.
+    The w and h resembles the width and height that the sprite should be 
+    displayed on the screen. 
+
+    SPRITEHANDLER : 
+
+    The SpriteHandler handles the rendering of sprites to the screen, along
+    with creating the Sprites themselves. The SpriteHandler must be used for
+    the creation of Sprites, otherwise their texture will be nullptrs. The 
+    SH's render call MUST be called each frame in your render() method for the
+    Sprites to render each frame.
+
+    To create a Sprite, call the SH's create_sprite function. This function 
+    creates a Sprite on heap memory, and the pointer to the new Sprite is 
+    returned. It is important to note that the user is responsible for handling
+    this memory.
+
+    To render a Sprite, call the render_sprite() method, with the Sprite and
+    its screen x and y position as parameters. On the next render() call, each 
+    Sprite will be rendered to the screen. Alike the ConsoleOutputHandler 
+    and TextDisplayHandler, the clear() method is not required to be called 
+    each frame to "clear" the screen. Only call the clear() method if the 
+    intent is to clear the buffer of Sprites before they are able to render 
+    on the next render() call.
+    
+
+10 : MENUS --------------------------------------------------------------------
+
+    MENUS :
+
+    Menus are used for building modular simulations. The LSDLE provides the 
+    blueprints and tools needed to build basic Menus. To build a Menu, create a
+    new header file for your new Menu. Inside create a new class, with the name 
+    of your Menu, and derive it from the Menu class inside Menu.h in the LSDLE 
+    directory. Alike the engine, there's two methods that should be overriden 
+    by your class : The start() and update() methods. 
+
+    At any time, a Menu is either activated or deactivated. If it is activated, 
+    it will be updated by the MenuHandler(Explained in next section). If it is 
+    not activated, the Menu is ignored. 
+
+    When a Menu is activated, it's start() method is called. This is the only 
+    point when the start() method is automatically called by the engine. Every 
+    frame after it is activated, its update() method is called. 
+
+    Each Menu has its own string ID, and must be set by your derived Menu class. 
+    Each Menu's ID MUST be unique and cannot be shared by another Menu. 
+
+    The last important aspect to the Menu class, is that it contains a pointer
+    to an InstructionQueue. The IQ is a class that contains a single 
+    std::queue of strings. These "strings" acts as instructinos that can be 
+    emplaced and read in many modular purposes. THe Menu class uses an IQ to 
+    communicate with the MenuHandler. The pointer to the IQ of each Menu class
+    is set when you call the register_menu() method of the MenuHandler class. 
+    This IQ's memory lives inside the MenuHandler's class, and because of this,
+    the MenuHandler can iterate through the InstructionQueue each frame inside
+    its update() method to check for instructions.
+
+    MENU INSTRUCTIONS : 
+
+    There are several instances when a Menu may need to communicate with 
+    the MenuHandler. This can be when a Menu wants to activate another Menu, 
+    deactivate another Menu or call the start() method of another Menu. 
+    For each of these situations, a specific set of "instructions" should be
+    placed inside the Menu's instruction queue. After the instructinos are 
+    placed in the queue, the MenuHandler will read them on its next 
+    update() method. The different instructions should pass are explained
+    below:
+
+    Activating a Menu:
+
+    To activate a different Menu from inside another Menu, add the string :
+    "activate_menu", followed by adding another string, with this string 
+    being the ID of the Menu you want to activate.
+
+    Deactivating a Menu:
+
+    Deactivating a Menu is the same process as activating one, simply replace
+    the "activate_menu" instruction with : "deactivate_menu".
+
+    Calling a Menu's start() method:
+
+    To call a Menu's start() method, add the instruction : "call_start" 
+    followed by another string of the target Menu's ID.
+
+    With these three commands, Menus can control whether other Menus are 
+    activated or not, without implicitely having their respective Menu
+    object.
+
+
+11 : MENU HANDLER -------------------------------------------------------------
+
+    The MenuHandler is a class that handles Menus, and is pre created by the 
+    LSDLE and is available to your class that derived from the LSDLE.  The MH's 
+    purpose is to manage every Menu that exists during the lifetime or the 
+    program, and track each Menu that is activated. The MH also updates each
+    Menu that is activated. 
+
+    For each Menu that you create, you MUST register it with the MenuHandler. 
+    This can be done by calling the MH's register_menu() method.
+
+    To activate a Menu, call the activate_menu() method with the Menu passed 
+    as a parameter, or use the overloaded method with the Menu ID. The MH
+    is updated automatically each frame by the LSDLE, similar to the 
+    InputHandler, so you should not call its update() method or activated
+    Menus will be updated twice per frame.
+
+12 : MENU TOOLS ---------------------------------------------------------------
+
+    The last thing to discuss is probably the most complicated. There is a 
+    seperate documentation file dedicated to this (MenuTools.txt) so I won't
+    got into too much detail here. I advise you read the MT doc file after 
+    understanding this one. MenuTools can be used to set up interactable 
+    Menus for your user inside your Menu classes. There are two different 
+    options when it comes to using MenuTools, that being a list selection, 
+    and a menu selection.
+
+    LIST SELECTION:
+
+    The list selection option should be used when you want to create a simple
+    navigate-and-choose list for your user. Your user will only be able to 
+    navigate a predetermined list of strings and select one.
+
+    MENU SELETION:
+
+    The menu selection is used when modularibility is required. If you want 
+    your user to be able to change a variable, make a choice or edit text, the
+    Menu selection is the way to go. 
+
+    The MenuTools are not created by default by the LSDLE, if you need them I 
+    advise making the MT object in your main class that derives from LSDLE 
+    then passing the pointer to each of your Menus for them to use.
+
+
+13 : DEBUG --------------------------------------------------------------------
+
+    The LSDLE contains a useful alternative for debugging "output" statements
+    than by simply using std::cout. The Debug class can be found under the 
+    Debug.h file. This class is a static class that contains a few convenient
+    methods for things such as checking if a file exists, or outputting 
+    statements. 
+
+    There are three methods to the Debug class. The does_directory_exist 
+    returns a boolean if the passed directory is a valid directory. The 
+    clear_debug_output_file() clears the output file that Debug logs to. This
+    file is by default set to : "OutputLog.txt" but can be changed by 
+    using the change_output_directory() method. I advise calling 
+    the clear_debug_output_file() every program simulation, otherwise 
+    the content of the output file will continue to build per each 
+    program simulation. Lastly, the log() method is used for outputting 
+    statements to the output file. The first parameter of the method
+    is the actual string to be outputted to the file. The second parameter
+    is the "threat level" of the statement. There are three options for this
+    level, that being LOG, WARN and ERR. LOG should be used when the statement
+    being outputted is regular output, and is not an error of any sort. WARN is
+    used for things that may cause crashes, or danger in your code. This could 
+    be the detection of dangling pointers and such. Lastly, ERR should be 
+    used when an error has occured, typically crashing the program. I typically
+    output the Debug ERR statement, then exit my program. If at any point your
+    program crashes unexpectedly, the first thing you should do is check the 
+    debug's output file. 
+
+14 : CONCLUSION ---------------------------------------------------------------
+
+    That should be everything you need to know to use the LSDLE. If you have
+    any questions about the engine, please contact me and I will solve them 
+    best I can. Also, please send me the things you make with the LSDLE, I am 
+    very curious to see what you create! 
+

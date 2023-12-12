@@ -1,0 +1,182 @@
+The MenuTools are a powerful set of methods that provide an interactable
+text menu for the user. There are two main methods to this class, 
+simulate_list_selection and simulate_menu. 
+
+The simulate_list selection (abbv. SLS) provides a simple set of choices
+to the user. This list will render on the screen each frame with a cursor
+pointing to the first element by default. Using the 'w' and 's' keys, the
+menu can be navigated. When the desired item is hovered upon, pressing the
+'Enter' key will flag the item as selected. The logic performed on this 
+selection is up to the methods outside of the class, all the SLS does is 
+flag the item as selected, and nothing else. The list will continue to render
+with no change if the SLS's caller does not act on it. The SLS will print 
+outsideon the screen as such: 
+
+---------------------------------------------------------------------
+
+ > Option 1
+   Option 2
+   Option 3
+
+---------------------------------------------------------------------
+
+The way this method tracks changes in the list simulation is through the 
+ListSelectionDataContainer inside the MenuTools class. This contains data such
+as the cursor's position, whether an item has been selected or not, the 
+cursor's color, whether to block the enter key when it has been pressed on an 
+item, and lastly the content of the list selection stored in a vector.
+
+To use the SLS, simply create a ListSelectionDataContainer and fill its 
+%content with ColorStrings (A class that simply stores a string and its color)
+by directly accessing it and using the built in push_back vector method. 
+Then call the MenuTools' simulate_list_selection and pass it the LSDC object.
+Once a the user has pressed enter on an item, the LSDC will change its 
+item_has_been_selected bool to be true, then the SLS's caller can handle that
+logic accordingly, using an if statement after each SLS call to check if this 
+bool is true. The creation process for LSDC would look something like this: 
+
+
+---------------------------------------------------------------------
+
+  ListSelectionDataContainer l_s_d_c("Blue");
+
+  l_s_d_c.push_back(ColorString("Option 1", "White"));
+  l_s_d_c.push_back(ColorString("Option 2", "White"));
+  l_s_d_c.push_back(ColorString("Option 3", "White"));
+
+---------------------------------------------------------------------
+
+
+And the calling process would something like this:
+
+
+---------------------------------------------------------------------
+
+  menu_tools.simulate_list_selection(l_s_d_c);
+
+  if(l_s_d_c.item_has_been_selected)
+  {
+    // Perform any logic here
+  }
+
+---------------------------------------------------------------------
+
+
+Moving on to simulate_menu, this one is a bit more complex, but offers
+vastly more functionality than a simple text list. The simulate_menu 
+(abbv. SM) tracks and stores data in a similar way to the LSDC, with the only
+difference being that their vector content stores MenuToolItem* rather than 
+ColorStrings. MenuToolItem is a base class that 6 classes derive from. Those 
+classes being:
+
+MenuToolButton
+MenuToolText
+MenuToolChoice
+MenuToolVariable
+MenuToolList
+
+The MenuToolItem containes 2 virtual functions: render and handle_input. 
+Each derived MenuToolItem class will override these functions and implement 
+their own logic. Below are explanations for what each of the MenuToolItems 
+do:
+
+
+BUTTON:
+
+---------------------------------------------------------------------
+
+ > [This is a Button]
+   [This is another Button]
+
+---------------------------------------------------------------------
+
+The Button acts as a selectable / clickable item that will simply flag
+itself as selected through the MenuSimulationDataContainer (abbv. MSDC),
+then the caller would need to implement their own logic to what happens based
+on this button being clicked, similar to when an item in the SLS is selected.
+Do note, once a button is clicked, it will de-select itself on the second frame
+call.
+
+
+TEXT:
+
+---------------------------------------------------------------------
+
+ > This is a text item
+   This is another text item
+
+---------------------------------------------------------------------
+
+The Text item acts as a modifiable string. The Text can be selected inside
+the SM and edited. When the Text is selected, it will indent forward a space
+and turn the color of the cursor to resemble it is currently selected and 
+receiving key input.
+
+
+CHOICE:
+
+---------------------------------------------------------------------
+
+   Color:
+    > Blue
+      Red 
+   FontSize: 14
+  
+---------------------------------------------------------------------
+
+The Choice object is a type of variable, with the exception that its contents
+are predetermined, and the user can select one of the preset values. For 
+instance, in the example above, there are two Choice Items in the SM.
+The first choice, is called 'Color' and is currently selected. The user is 
+navigating between the two options of the Color choice, "Blue" and "Red".
+Once a selection has been made, it will replace the previous selection as 
+can be seen in the second Choice item, "FontSize". The current FontSize 
+choice is not currently selected, hence why the choice list is not expanded. 
+You can see the currently selected choice of any choice object next to the
+name after the ":".
+
+
+VARIABLE:
+
+---------------------------------------------------------------------
+
+ > Variable1 : This is text
+   Variable2 : 34
+
+---------------------------------------------------------------------
+
+The Variable object is an editable object that has three value types:
+String, Int and Float. The name of the variable cannot be changed, but when
+a Variable is selected, the value may be edited. Characters or Numbers can
+be placed inside the variable dependant on the type. Strings are able to add
+any character to them, Ints and are only numbers, with no decimal point, and
+floats may use a decimal point. The value of the Variable will change to 
+the cursor color when selected.
+
+
+LIST:
+
+---------------------------------------------------------------------
+
+   List Name:
+      Variable: 34
+      This is a text item
+      Color:
+       > Blue
+         Red
+      [This is a Button]
+
+---------------------------------------------------------------------
+         
+The List is the most flexible out of all the objects. The List stores 
+MenuToolItem*s, and can hold an arbitrary amount of them. Each MenuToolItem
+retains its functionality within the List. As you can see above, an example
+from each of the previous MenuToolItems have been included in the List. The
+List can even hold another List of MenuToolItems, this means you can make 
+a List chain as long as needed. As for added items to a list, such as if you
+wanted a list of Text items, and had a Button at the bottom to add more list
+items, the MS called would need to implement that functionality through a 
+seperate process. To do this, add a Button as shown in the example above to the
+list. Then, on every frame check if the button has been selected. If so, call
+the logic that is seperate from the MS that you have created to run whatever
+functionality you would like.

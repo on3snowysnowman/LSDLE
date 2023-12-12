@@ -1,0 +1,43 @@
+# Version 1.0.3
+
+  - Configured SpriteHandler to have a sprite size multiplier for changing
+    the size output of sprites  
+
+  - Added a Coordinate.h file that provides a basic Coordinate class for 
+    storing two uint16_ts
+
+  - Reconfigured SpriteHandler to use a DataContainer for storing the 
+    rendering data for sprites so that a single sprite can now be rendered
+    multiple times to the screen in one frame
+
+  - Added docstring to JsonLoader
+
+  - Added the 'const' and 'final' modifier to many functions where it was
+    applicable
+
+  - Fixed issue where some methods still called the old "does_file_exist"
+    name from the Debug class.
+  
+  - Updated the documentation inside the MenuToolItem and their derived 
+    class's files.
+
+  - Updated the documentation inside the LSDLE.h file
+
+# Version 1.0.2
+
+  - Renamed the Debug's "does_file_exist" method to "does_directory_exist" 
+    to better reflect its function.
+
+# Version 1.0.1
+
+  - Tweaked the way Sprites are created. The Sprites will now be created from
+    the SpriteHandler, with each Sprite containing purely the source and 
+    destination data along with its texture. Sprites created by themselves 
+    will not contain a valid texture
+  
+  - Reconfigured the privacy of some members in the LSDLE itself. Added get 
+    methods to the engine for retrieving screen width and height
+
+# Version 1.0 
+
+  - Release Version.
