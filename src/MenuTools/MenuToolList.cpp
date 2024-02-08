@@ -7,12 +7,9 @@
 
 MenuToolList::MenuToolList() {}
 
-MenuToolList::MenuToolList(ConsoleOutputHandler* _console_output_handler,
-    InputHandler* _input_handler, std::string _cursor_color, 
-    std::string _name, uint16_t _cursor_pos, int32_t _selected_pos)
-    :
-    MenuToolItem(_console_output_handler, _input_handler, _cursor_color, 
-    LIST)
+MenuToolList::MenuToolList(Window* _window, std::string _cursor_color, 
+    std::string _name, uint16_t _cursor_pos, int32_t _selected_pos) :
+    MenuToolItem(_window, _cursor_color, LIST)
 {
     name = _name;
     cursor_pos = _cursor_pos;
@@ -25,59 +22,59 @@ MenuToolList::MenuToolList(ConsoleOutputHandler* _console_output_handler,
 void MenuToolList::render_no_status() const
 {
     uint16_t initial_c_o_cursor_x_pos = 
-        console_output_handler->get_cursor_position().first;
+        window->get_cursor_position().first;
 
-    console_output_handler->modify_cursor_position(3, 0);
-    console_output_handler->add_str(name);
-    console_output_handler->add_ch(':');
+    window->modify_cursor_position(3, 0);
+    window->add_str(name);
+    window->add_ch(':');
 
-    console_output_handler->move_cursor_x(
+    window->set_cursor_x_position(
             initial_c_o_cursor_x_pos);
-    console_output_handler->modify_cursor_position(3, 1);
+    window->modify_cursor_position(3, 1);
 
     for(MenuToolItem* item : content)
     {
         item->render_no_status();
     }
 
-    console_output_handler->move_cursor_x(
+    window->set_cursor_x_position(
             initial_c_o_cursor_x_pos);
 }
 
 void MenuToolList::render_hovered() const
 {
     uint16_t initial_c_o_cursor_x_pos = 
-        console_output_handler->get_cursor_position().first;
+        window->get_cursor_position().first;
 
-    console_output_handler->add_str(" > ", cursor_color);
-    console_output_handler->add_str(name);
-    console_output_handler->add_ch(':');
+    window->add_str(" > ", cursor_color);
+    window->add_str(name);
+    window->add_ch(':');
 
-    console_output_handler->move_cursor_x(
+    window->set_cursor_x_position(
             initial_c_o_cursor_x_pos);
-    console_output_handler->modify_cursor_position(3, 1);
+    window->modify_cursor_position(3, 1);
 
     for(MenuToolItem* item : content)
     {
         item->render_no_status();
     }
 
-    console_output_handler->move_cursor_x(
+    window->set_cursor_x_position(
             initial_c_o_cursor_x_pos);
 }
 
 void MenuToolList::render_selected() const
 {
     uint16_t initial_c_o_cursor_x_pos = 
-        console_output_handler->get_cursor_position().first;
+        window->get_cursor_position().first;
 
-    console_output_handler->modify_cursor_position(3, 0);
-    console_output_handler->add_str(name, cursor_color);
-    console_output_handler->add_ch(':');
+    window->modify_cursor_position(3, 0);
+    window->add_str(name, cursor_color);
+    window->add_ch(':');
 
-    console_output_handler->move_cursor_x(
+    window->set_cursor_x_position(
             initial_c_o_cursor_x_pos);
-    console_output_handler->modify_cursor_position(3, 1);
+    window->modify_cursor_position(3, 1);
 
     // An item is selected
     if(selected_pos > -1)
@@ -111,7 +108,7 @@ void MenuToolList::render_selected() const
         }
     }
 
-    console_output_handler->move_cursor_x(
+    window->set_cursor_x_position(
             initial_c_o_cursor_x_pos);
 }
 

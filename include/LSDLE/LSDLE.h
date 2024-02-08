@@ -7,6 +7,7 @@
 #include "Menu.h"
 #include "MenuHandler.h"
 #include "MenuTools/MenuTools.h"
+#include "Window.h"
 
 /**
  * Version 1.0.3
@@ -32,8 +33,11 @@ public:
      */
     void start();
 
-    int get_screen_width() const;
-    int get_screen_height() const;
+    static int get_screen_width();
+    static int get_screen_height();
+
+    static InputHandler* get_input_handler();
+    static TextureHandler* get_texture_handler(); 
 
 protected:
 
@@ -59,8 +63,8 @@ protected:
      */
     virtual void quit();
 
-    InputHandler* input_handler;
-    TextureHandler* texture_handler;
+    static InputHandler* input_handler;
+    static TextureHandler* texture_handler;
 
     MenuHandler* menu_handler;
 
@@ -110,8 +114,8 @@ private:
     // Target number of miliseconds per frame to achieve 60 FPS
     const uint8_t TARG_MILISECONDS_PER_FRAME = 16;
 
-    int screen_width; // Width of the window
-    int screen_height; // Height of the window
+    static int screen_width; // Width of the window
+    static int screen_height; // Height of the window
 
     /**
      * @brief Path to the LSDLE directory on the user's computer. This path 
@@ -127,5 +131,4 @@ private:
 
     SDL_Window* window;
     SDL_Renderer* renderer;
-
 };

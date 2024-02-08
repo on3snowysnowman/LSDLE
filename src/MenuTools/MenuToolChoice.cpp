@@ -1,18 +1,16 @@
 #include "MenuToolChoice.h"
 
 
+#include <iostream>
+
 // Constructors / Deconstructor
 
 MenuToolChoice::MenuToolChoice() : MenuToolItem() {}
 
-MenuToolChoice::MenuToolChoice(ConsoleOutputHandler* _console_output_handler,
-    InputHandler* _input_handler, std::string _cursor_color, std::string _name,
-    uint8_t _choice_index)
-    :
-    MenuToolItem(_console_output_handler, _input_handler, _cursor_color,
-    CHOICE)
+MenuToolChoice::MenuToolChoice(Window* _window, std::string _cursor_color, std::string _name,
+    uint8_t _choice_index) :
+    MenuToolItem(_window, _cursor_color, CHOICE)
 {
-    cursor_color = _cursor_color;
     name = _name;
     choice_index = _choice_index;
     cursor_index = choice_index;
@@ -24,77 +22,77 @@ MenuToolChoice::MenuToolChoice(ConsoleOutputHandler* _console_output_handler,
 void MenuToolChoice::render_no_status() const
 {
     uint16_t initial_c_o_cursor_x_pos = 
-        console_output_handler->get_cursor_position().first;
+        window->get_cursor_position().first;
     
-    console_output_handler->modify_cursor_position(3, 0);
-    console_output_handler->add_str(name);
-    console_output_handler->add_str(": ");
-    console_output_handler->add_str(choices.at(choice_index).content, 
+    window->modify_cursor_position(3, 0);
+    window->add_str(name);
+    window->add_str(": ");
+    window->add_str(choices.at(choice_index).content, 
         choices.at(choice_index).color);
-    console_output_handler->move_cursor_x(initial_c_o_cursor_x_pos);
-    console_output_handler->modify_cursor_position(0, 1);
+    window->set_cursor_x_position(initial_c_o_cursor_x_pos);
+    window->modify_cursor_position(0, 1);
 }
 
 void MenuToolChoice::render_hovered() const
 {
     uint16_t initial_c_o_cursor_x_pos = 
-        console_output_handler->get_cursor_position().first;
+        window->get_cursor_position().first;
     
-    console_output_handler->add_ch(' ');
-    console_output_handler->add_ch('>', cursor_color);
-    console_output_handler->add_ch(' ');
-    console_output_handler->add_str(name);
-    console_output_handler->add_str(": ");
-    console_output_handler->add_str(choices.at(choice_index).content, 
+    window->add_ch(' ');
+    window->add_ch('>', cursor_color);
+    window->add_ch(' ');
+    window->add_str(name);
+    window->add_str(": ");
+    window->add_str(choices.at(choice_index).content, 
         choices.at(choice_index).color);
-    console_output_handler->move_cursor_x(initial_c_o_cursor_x_pos);
-    console_output_handler->modify_cursor_position(0, 1);
+    window->set_cursor_x_position(initial_c_o_cursor_x_pos);
+    window->modify_cursor_position(0, 1);
 
 }
 
 void MenuToolChoice::render_selected() const
 {
     uint16_t initial_c_o_cursor_x_pos = 
-        console_output_handler->get_cursor_position().first;
+        window->get_cursor_position().first;
     
-    console_output_handler->modify_cursor_position(3, 0);
-    console_output_handler->add_str(name);
-    console_output_handler->add_ch(':');
-    console_output_handler->move_cursor_x(initial_c_o_cursor_x_pos);
-    console_output_handler->modify_cursor_position(0, 1);
+    window->modify_cursor_position(3, 0);
+    window->add_str(name);
+    window->add_ch(':');
+    window->set_cursor_x_position(initial_c_o_cursor_x_pos);
+    window->modify_cursor_position(0, 1);
 
     if(choices.size() == 0) return;
 
     for(int i = 0; i < cursor_index; ++i)
     {
-        console_output_handler->modify_cursor_position(6, 0);
+        window->modify_cursor_position(6, 0);
 
-        console_output_handler->add_str(choices.at(i).content,
+        window->add_str(choices.at(i).content,
             choices.at(i).color);
 
-        console_output_handler->move_cursor_x(initial_c_o_cursor_x_pos);
-        console_output_handler->modify_cursor_position(0, 1);
+        window->set_cursor_x_position(initial_c_o_cursor_x_pos);
+        window->modify_cursor_position(0, 1);
     }
 
-    console_output_handler->modify_cursor_position(4, 0);
-    console_output_handler->add_ch('>', cursor_color);
-    console_output_handler->add_ch(' ');
+    window->modify_cursor_position(4, 0);
+    window->add_ch('>', cursor_color);
+    window->add_ch(' ');
 
-    console_output_handler->add_str(choices.at(cursor_index).content,
+    window->add_str(choices.at(cursor_index).content,
         choices.at(cursor_index).color);
 
-    console_output_handler->move_cursor_x(initial_c_o_cursor_x_pos);
-    console_output_handler->modify_cursor_position(0, 1);
+    window->set_cursor_x_position(initial_c_o_cursor_x_pos);
+    window->modify_cursor_position(0, 1);
 
     for(int i = cursor_index + 1; i < choices.size(); ++i)
     {
-        console_output_handler->modify_cursor_position(6, 0);
+        window->modify_cursor_position(6, 0);
 
-        console_output_handler->add_str(choices.at(i).content,
+        window->add_str(choices.at(i).content,
             choices.at(i).color);
 
-        console_output_handler->move_cursor_x(initial_c_o_cursor_x_pos);
-        console_output_handler->modify_cursor_position(0, 1);
+        window->set_cursor_x_position(initial_c_o_cursor_x_pos);
+        window->modify_cursor_position(0, 1);
     }
 }
 

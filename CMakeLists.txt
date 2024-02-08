@@ -4,12 +4,15 @@ project(LSDLE VERSION "1.0.2")
 # Create the static library
 add_library(LSDLE STATIC ${SOURCES}
     src/ConsoleOutputHandler.cpp
+    src/EventSystem.cpp
     src/InputHandler.cpp
     src/LSDLE.cpp
+    src/Menu.cpp
     src/MenuHandler.cpp
     src/SpriteHandler.cpp
     src/TextDisplayHandler.cpp
     src/TextureHandler.cpp
+    src/Window.cpp
 
     src/MenuTools/MenuToolButton.cpp
     src/MenuTools/MenuToolChoice.cpp

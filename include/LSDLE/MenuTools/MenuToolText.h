@@ -6,6 +6,7 @@
 #include "../ConsoleOutputHandler.h"
 #include "../InputHandler.h"
 #include "SimulationDataContainers.h"
+#include "Window.h"
 
 
 /**
@@ -20,9 +21,16 @@ class MenuToolText : public MenuToolItem
 public:
 
     MenuToolText();
-    MenuToolText(ConsoleOutputHandler* _console_output_handler,
-        InputHandler* _input_handler, std::string cursor_color,
+    MenuToolText(Window* window, std::string cursor_color,
         std::string _content);
+
+    /**
+     * @brief Clears the content of the Text item
+     */
+    void clear() 
+    {
+        content.clear();
+    }
 
     /**
      * @brief Render the Text with the understanding that it has no status

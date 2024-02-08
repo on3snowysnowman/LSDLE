@@ -31,9 +31,8 @@ public:
 
     ConsoleOutputHandler();
 
-    ConsoleOutputHandler(TextureHandler* texture_handler, 
-        uint16_t _start_x, uint16_t _end_x, 
-        uint16_t _start_y, uint16_t _end_y);
+    ConsoleOutputHandler(uint16_t _start_x, uint16_t _start_y, 
+        uint16_t _end_x, uint16_t _end_y);
 
     /**
      * @brief Moves the cursor to a position on the screen.
@@ -151,8 +150,14 @@ public:
      */
     const std::pair<uint16_t, uint16_t>& get_cursor_position() const;
 
+    TextDisplayHandler* get_text_display_handler();
+
 private:
     
+    void _add_ch(char c, std::string color = "");
+
+    void _add_str(std::string str, std::string color = "");
+
     // Starting X position of the screen
     uint16_t start_x {};
 
@@ -197,9 +202,5 @@ private:
     std::pair<uint16_t, uint16_t> cursor_position {0, 0};
 
     TextDisplayHandler text_display_handler;
-
-    void _add_ch(char c, std::string color = "");
-
-    void _add_str(std::string str, std::string color = "");
 
 };

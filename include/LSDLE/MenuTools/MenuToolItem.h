@@ -6,6 +6,7 @@
 #include "../InputHandler.h"
 #include "SimulationDataContainers.h"
 #include "MenuToolItemType.h"
+#include "Window.h"
 
 
 /**
@@ -42,8 +43,7 @@ public:
     };
 
     MenuToolItem();
-    MenuToolItem(ConsoleOutputHandler* _console_output_handler,
-        InputHandler* _input_handler, std::string _cursor_color, 
+    MenuToolItem(Window* window, std::string _cursor_color, 
         ItemType _item_type);
 
     
@@ -98,11 +98,10 @@ protected:
      */
     void apply_input_to_string(uint32_t key, std::string& str);
 
-    ConsoleOutputHandler* console_output_handler = nullptr;
     InputHandler* input_handler = nullptr;
 
     // Keys to their respective keys when used with the Shift Key
-    static std::unordered_map<char, char> keys_to_shifted_keys;
+    static const std::unordered_map<char, char> KEYS_TO_SHIFTED_KEYS;
 
     // Color of the cursor
     std::string cursor_color;
@@ -113,4 +112,5 @@ protected:
      */
     ItemType item_type = TEXT;
 
+    Window* window;
 };

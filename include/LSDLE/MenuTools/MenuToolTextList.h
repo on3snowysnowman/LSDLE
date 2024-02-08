@@ -4,6 +4,7 @@
 #include "../ConsoleOutputHandler.h"
 #include "../InputHandler.h"
 #include "MenuToolText.h"
+#include "Window.h"
 
 
 /**
@@ -19,9 +20,8 @@ class MenuToolTextList : public MenuToolItem
 public:
 
     MenuToolTextList();
-    MenuToolTextList(ConsoleOutputHandler* _console_output_handler, InputHandler*
-        _input_handler, std::string _cursor_color, std::string _name,
-        uint16_t _cursor_pos = 0, int32_t _selected_pos = -1);
+    MenuToolTextList(Window* window, std::string _cursor_color, 
+        std::string _name, uint16_t _cursor_pos = 0, int32_t _selected_pos = -1);
     
     /**
      * @brief Render the TextList with the understanding that it has no status

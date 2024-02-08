@@ -2,10 +2,15 @@
 
 #include <string>
 #include <queue>
+#include <cstdint>
 
 #include "InstructionSequence.h"
+#include "Window.h"
+#include "MenuTools.h"
+#include "InputHandler.h"
 
-
+class MenuHandler;
+    
 /**
  * @brief Base class for creating derived menus with specific logic.
  * 
@@ -26,8 +31,7 @@ class Menu
 
 public:
 
-    Menu() {}
-
+    Menu(uint16_t start_x, uint16_t start_y, uint16_t end_x, uint16_t end_y);
     
     /**
      * @brief Sets the instruction queue of this Menu.
@@ -36,10 +40,7 @@ public:
      * @param _instruction_queue 
      */
     void set_instruction_queue(std::queue<InstructionSequence>* 
-        _instruction_queue)
-    {
-        instruction_queue = _instruction_queue;
-    }
+        _instruction_queue);
 
     /**
      * @brief Called when the Menu is activated.
@@ -47,34 +48,36 @@ public:
      * Logic that needs to be run once, such as the instanciation and 
      * definition of variables should be placed here. 
      */
-    virtual void start() {}
+    virtual void start();
 
     /**
      * @brief Called each frame if the Menu is activated.
      * 
      * This is where the majority of the Menu's logic should go.
      */
-    virtual void update() {}
+    virtual void update();
+
+    void set_menu_handler(MenuHandler* menu_handler);
 
     /**
      * @brief Flags this Menu as activated.
      */
-    void flag_activated() { activated = true; }
+    void flag_activated();
 
     /**
      * @brief Flags this Menu as not activated
      */
-    void flag_deactivated() { activated = false; }
+    void flag_deactivated();
 
     /**
      * @brief Returns true if this Menu is activated
      */
-    bool is_activated() { return activated; }
+    bool is_activated();
 
     /**
      * @brief Returns the unique identifier of this Menu
      */
-    std::string get_id() const { return menu_id; }
+    std::string get_id() const;
 
 protected:
 
@@ -88,6 +91,7 @@ protected:
     // Unique string identifier
     std::string menu_id = "BaseMenu";
 
+
     /**
      * The instruction_queue points to the instruction queue object in the 
      * MenuHandler class. Menus will place InstructionSequences inside this 
@@ -96,4 +100,12 @@ protected:
      * needed to include the MenuHandler, causing circular imports.
      */
     std::queue<InstructionSequence>* instruction_queue;
+
+    Window* window;
+
+    MenuTools* menu_tools;
+
+    InputHandler* input_handler;
+
+    MenuHandler* m_handler;
 };

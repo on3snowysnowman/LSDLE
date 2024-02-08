@@ -1,5 +1,6 @@
 #include "MenuToolItem.h"
 #include "MenuToolItemType.h"
+#include "LSDLE.h"
 
 
 // Static Members
@@ -8,7 +9,7 @@
 /**
  * Keys to their respective keys when used with the Shift Key
  */
-std::unordered_map<char, char> MenuToolItem::keys_to_shifted_keys
+const std::unordered_map<char, char> MenuToolItem::KEYS_TO_SHIFTED_KEYS
 {
     {'\'', '"'},
     {',', '<'},
@@ -33,16 +34,18 @@ std::unordered_map<char, char> MenuToolItem::keys_to_shifted_keys
 };
 
 
+#include <iostream>
+
 // Constructors / Deconstructor
 
 MenuToolItem::MenuToolItem() {}
 
-MenuToolItem::MenuToolItem(ConsoleOutputHandler* _console_output_handler,
-    InputHandler* _input_handler, std::string _cursor_color, 
+MenuToolItem::MenuToolItem(Window* _window, std::string _cursor_color, 
     ItemType _item_type)
 {
-    console_output_handler = _console_output_handler;
-    input_handler = _input_handler;
+
+    window = _window;
+    input_handler = LSDLE::get_input_handler();
 
     cursor_color = _cursor_color;
 
@@ -116,9 +119,9 @@ void MenuToolItem::apply_input_to_string(uint32_t key, std::string& str)
             return;
         }
 
-        if(keys_to_shifted_keys.find(key) != keys_to_shifted_keys.end())
+        if(KEYS_TO_SHIFTED_KEYS.find(key) != KEYS_TO_SHIFTED_KEYS.end())
         {
-            str.push_back(char(keys_to_shifted_keys.at(key)));
+            str.push_back(char(KEYS_TO_SHIFTED_KEYS.at(key)));
             return;
         }
     }

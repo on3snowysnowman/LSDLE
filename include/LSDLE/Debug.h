@@ -3,6 +3,8 @@
 #include <fstream>
 #include <filesystem>
 #include <cstdint>
+#include <iostream>
+#include <vector>
 
 
 /**
@@ -23,16 +25,6 @@ public:
         WARN,
         ERR
     };
-
-    /**
-     * Returns true if the 'path' parameter is a valid directory
-     * 
-     * @param path Target Directory
-    */
-    static bool does_directory_exist(const char* path)
-    {
-        return std::filesystem::exists(path);
-    }
 
     /**
      * Clears the Debug's output file
@@ -110,6 +102,29 @@ public:
     static void change_output_directory(const char* new_path)
     {
         output_file_path = new_path;
+    }
+
+    /**
+     * Returns true if the 'path' parameter is a valid directory
+     * 
+     * @param path Target Directory
+    */
+    static bool does_directory_exist(const char* path)
+    {
+        return std::filesystem::exists(path);
+    }
+
+    template<typename T> 
+    static void output_vector(const std::vector<T>& vec) 
+    {
+        std::cout << "[ ";
+
+        for(std::size_t i = 0; i < vec.size() - 1; ++i)
+        {
+            std::cout << vec.at(i) << ", ";
+        }
+
+        std::cout << vec.at(vec.size() - 1) << " ]\n";
     }
 
 private:

@@ -7,6 +7,7 @@
 #include "MenuToolItem.h"
 #include "../ColorString.h"
 #include "SimulationDataContainers.h"
+#include "Window.h"
 
 
 /**
@@ -23,8 +24,11 @@ class MenuTools
 public:
 
     MenuTools();
-    MenuTools(ConsoleOutputHandler* _console_output_handler, 
-        InputHandler* _input_handler);
+    MenuTools(Window* window);
+
+    void render_colored_number(uint16_t num, uint16_t lower_bound, 
+        uint16_t higher_bound, std::vector<std::string> colors = {"Red", 
+            "Orange", "Yellow", "Green"});
 
     /**
      * @brief Provides a list selection to the user using an LSDC as the data
@@ -55,9 +59,6 @@ public:
 
 
 private:
-
-    ConsoleOutputHandler* console_output_handler = nullptr;
-    InputHandler* input_handler = nullptr;
 
     /**
      * @brief The render function for the list selection process. 
@@ -92,4 +93,7 @@ private:
      */
     void handle_menu_simulation_input(MenuSimulationDataContainer& m_s_d_c);
 
+    InputHandler* input_handler;
+
+    Window* window;
 };

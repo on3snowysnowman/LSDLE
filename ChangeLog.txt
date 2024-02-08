@@ -1,3 +1,51 @@
+# Version 1.1.0
+
+  CHANGES :
+
+ - Reconfigured the Menu system so that it can include the MenuHandler header
+   file, as well as the MenuHandler being able to include the Menu.h file so 
+   now both classes can communicate with eachother, allowing for Menus to 
+   easily being able to get pointer instances to other menus by a request to
+   the MenuHandler
+
+ - The LSDLE engine now has static pointers to the InputHandler and 
+   TextureHandler, along with public static methods to fetch these. This allows
+   anything that needs these two crucial objects to simply include the LSDLE.h 
+   file and request these. 
+
+ - Created a "Window" class. This Window class will make it much easier for 
+   users to work with text and sprites on the screen, without having to 
+   manually create an object for the ConsoleOutputHandler and 
+   TextDisplayHandler. 
+
+ - Each Menu instance now automatically creates a Window class for itself, so 
+   anything that needs to be added to the screen should simply be called by 
+   each Menu's window.
+
+ - Created a "WindowManager" class. This is entirely handled by the LSDLE 
+   engine, and its sole purpose is to track every window that exists during 
+   runtime and render it each frame. This means that the user will not have to
+   worry about rendering their window each frame. All that needs to be done is
+   to add content to it, and the rendering will be handled by the engine.
+
+  - Created an EventSystem for the Engine. This allows any object to 
+    "subscribe" to the EventSystem and pass a void return function instance
+    that they would like to be run when said event is triggered.
+
+  - Added an "anchoring" system to the ConsoleOutputHandler. This allows the 
+    user to determine where the x position of the cursor should be placed when
+    a newline is called. This is especially useful when outputting to the 
+    middle of the screen, and simply wanted to input a new line and have it be
+    placed at the beginning of the place in the middle of the screen that they
+    are rendering to.
+
+  FIXES :
+
+- Fixed a bug where MenuTools menu and list simulation would crash if empty
+  content was passed to it through the DataContainers
+
+
+
 # Version 1.0.3
 
   - Configured SpriteHandler to have a sprite size multiplier for changing

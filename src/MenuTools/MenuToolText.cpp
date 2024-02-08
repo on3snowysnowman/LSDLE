@@ -8,10 +8,8 @@ MenuToolText::MenuToolText()
     item_type = TEXT;
 }
 
-MenuToolText::MenuToolText(ConsoleOutputHandler* _console_output_handler,
-    InputHandler* _input_handler, std::string _cursor_color, 
-    std::string _content) :
-    MenuToolItem(_console_output_handler, _input_handler, _cursor_color, TEXT)
+MenuToolText::MenuToolText(Window* _window, std::string _cursor_color, 
+    std::string _content) :MenuToolItem(_window, _cursor_color, TEXT)
 {
     content = _content;
 }
@@ -22,42 +20,42 @@ MenuToolText::MenuToolText(ConsoleOutputHandler* _console_output_handler,
 void MenuToolText::render_no_status() const
 {
     uint16_t initial_c_o_cursor_x_pos = 
-        console_output_handler->get_cursor_position().first;
+        window->get_cursor_position().first;
 
-    console_output_handler->modify_cursor_position(3, 0);
-    console_output_handler->add_str(content);
-    console_output_handler->move_cursor_x(
+    window->modify_cursor_position(3, 0);
+    window->add_str(content);
+    window->set_cursor_x_position(
             initial_c_o_cursor_x_pos);
-    console_output_handler->modify_cursor_position(0, 1);
+    window->modify_cursor_position(0, 1);
 }
 
 void MenuToolText::render_hovered() const
 {
     uint16_t initial_c_o_cursor_x_pos = 
-        console_output_handler->get_cursor_position().first;
+        window->get_cursor_position().first;
 
-    console_output_handler->add_ch(' ');
-    console_output_handler->add_ch('>', cursor_color);
-    console_output_handler->add_ch(' ');
-    console_output_handler->add_str(content);
-    console_output_handler->move_cursor_x(
+    window->add_ch(' ');
+    window->add_ch('>', cursor_color);
+    window->add_ch(' ');
+    window->add_str(content);
+    window->set_cursor_x_position(
             initial_c_o_cursor_x_pos);
-    console_output_handler->modify_cursor_position(0, 1);
+    window->modify_cursor_position(0, 1);
 }
 
 void MenuToolText::render_selected() const
 {
     uint16_t initial_c_o_cursor_x_pos = 
-        console_output_handler->get_cursor_position().first;
+        window->get_cursor_position().first;
 
-        console_output_handler->add_str("  ");
-        console_output_handler->add_ch('>', cursor_color);
-        console_output_handler->add_ch(' ');
-        console_output_handler->add_str(content, cursor_color);
-        console_output_handler->add_ch('_');
-        console_output_handler->move_cursor_x(
+        window->add_str("  ");
+        window->add_ch('>', cursor_color);
+        window->add_ch(' ');
+        window->add_str(content, cursor_color);
+        window->add_ch('_');
+        window->set_cursor_x_position(
             initial_c_o_cursor_x_pos);
-    console_output_handler->modify_cursor_position(0, 1);
+    window->modify_cursor_position(0, 1);
 }
 
 MenuToolItem::Status MenuToolText::handle_input() 

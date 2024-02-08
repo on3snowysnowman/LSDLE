@@ -1,31 +1,55 @@
 #include "MenuTools.h"
+#include "LSDLE.h"
 
 #include <iostream>
-
-
 // Constructors / Deconstructor
 
 MenuTools::MenuTools() {}
 
-MenuTools::MenuTools(ConsoleOutputHandler* _console_output_handler,
-    InputHandler* _input_handler)
+MenuTools::MenuTools(Window* _window)
 {
-    console_output_handler = _console_output_handler;
-    input_handler = _input_handler;
+    window = _window;
+
+    input_handler = LSDLE::get_input_handler();
 }
 
 
 // Public
 
+void MenuTools::render_colored_number(uint16_t num, uint16_t lower_bound,
+    uint16_t higher_bound, std::vector<std::string> colors)
+{
+    float ratio = 1;
+
+    if(num < higher_bound)
+    {
+        num -= lower_bound;
+        higher_bound -= lower_bound;
+        lower_bound = 0; 
+
+        ratio = float(num / (higher_bound * 1.0));
+    }
+
+    uint8_t index = colors.size() * ratio;
+    
+    window->add_str(std::to_string(num), colors.at(index));
+}
+
 void MenuTools::simulate_list_selection(
     ListSelectionDataContainer& l_s_d_c)
 {
+    // There is no selection to handle
+    if(l_s_d_c.content.size() == 0) return;
+
     handle_list_selection_input(l_s_d_c);
     render_list_selection(l_s_d_c);
 }
 
 void MenuTools::simulate_menu(MenuSimulationDataContainer& m_s_d_c)
 {
+    // There are no MenuToolItems to handle
+    if(m_s_d_c.content.size() == 0) return;
+
     handle_menu_simulation_input(m_s_d_c);
     render_menu_simulation(m_s_d_c);
 }
@@ -36,35 +60,33 @@ void MenuTools::simulate_menu(MenuSimulationDataContainer& m_s_d_c)
 void MenuTools::render_list_selection(ListSelectionDataContainer& 
     l_s_d_c)
 {
-    if(l_s_d_c.content.size() == 0) return;
-
     uint16_t start_c_o_handler_cursor_x_pos = 
-        console_output_handler->get_cursor_position().first;
+        window->get_cursor_position().first;
 
     for(int i = 0; i < l_s_d_c.cursor_pos; ++i)
     {
-        console_output_handler->add_str("   ");
-        console_output_handler->add_str(l_s_d_c.content.at(i).content, 
+        window->add_str("   ");
+        window->add_str(l_s_d_c.content.at(i).content, 
             l_s_d_c.content.at(i).color);
-        console_output_handler->move_cursor_x(start_c_o_handler_cursor_x_pos);
-        console_output_handler->modify_cursor_position(0, 1);
+        window->set_cursor_x_position(start_c_o_handler_cursor_x_pos);
+        window->modify_cursor_position(0, 1);
     }
 
-    console_output_handler->add_ch(' ');
-    console_output_handler->add_ch('>', l_s_d_c.cursor_color);
-    console_output_handler->add_ch(' ');
-    console_output_handler->add_str(l_s_d_c.content.at(l_s_d_c.cursor_pos).content,
+    window->add_ch(' ');
+    window->add_ch('>', l_s_d_c.cursor_color);
+    window->add_ch(' ');
+    window->add_str(l_s_d_c.content.at(l_s_d_c.cursor_pos).content,
         l_s_d_c.content.at(l_s_d_c.cursor_pos).color);
-    console_output_handler->move_cursor_x(start_c_o_handler_cursor_x_pos);
-    console_output_handler->modify_cursor_position(0, 1);
+    window->set_cursor_x_position(start_c_o_handler_cursor_x_pos);
+    window->modify_cursor_position(0, 1);
     
     for(int i = l_s_d_c.cursor_pos + 1; i < l_s_d_c.content.size(); ++i)
     {
-        console_output_handler->add_str("   ");
-        console_output_handler->add_str(l_s_d_c.content.at(i).content, 
+        window->add_str("   ");
+        window->add_str(l_s_d_c.content.at(i).content, 
             l_s_d_c.content.at(i).color);
-        console_output_handler->move_cursor_x(start_c_o_handler_cursor_x_pos);
-        console_output_handler->modify_cursor_position(0, 1);
+        window->set_cursor_x_position(start_c_o_handler_cursor_x_pos);
+        window->modify_cursor_position(0, 1);
     }
 }
 
@@ -183,7 +205,7 @@ void MenuTools::render_menu_simulation(MenuSimulationDataContainer&
 
 void MenuTools::handle_menu_simulation_input(MenuSimulationDataContainer&
     m_s_d_c) 
-{
+{   
     // There is an item selected
     if(m_s_d_c.selected_pos > -1)
     {   

@@ -50,8 +50,8 @@ void SpriteHandler::render()
         if(s_container.sprite->is_enlarged)
         {
             // Enlarge the sprite with its new position
-            dest.x *= sprite_size_multiplier;
-            dest.h *= sprite_size_multiplier;
+            // dest.x *= sprite_size_multiplier;
+            // dest.y *= sprite_size_multiplier;
 
             dest.w *= sprite_size_multiplier;
             dest.h *= sprite_size_multiplier;

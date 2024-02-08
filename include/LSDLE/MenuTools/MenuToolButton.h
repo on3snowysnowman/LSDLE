@@ -6,6 +6,7 @@
 #include "../ConsoleOutputHandler.h"
 #include "../InputHandler.h"
 #include "SimulationDataContainers.h"
+#include "Window.h"
 
 
 /**
@@ -23,8 +24,7 @@ class MenuToolButton : public MenuToolItem
 public:
 
     MenuToolButton();
-    MenuToolButton(ConsoleOutputHandler* _console_output_handler, 
-        InputHandler* _input_handler, std::string _name, 
+    MenuToolButton(Window* window, std::string _name, 
         std::string cursor_color, std::string _button_color = "White");
     
     /**

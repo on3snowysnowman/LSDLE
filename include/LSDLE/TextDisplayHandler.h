@@ -25,8 +25,6 @@ public:
 
     TextDisplayHandler();
 
-    TextDisplayHandler(TextureHandler* _texture_handler);
-
     /**
      * @brief Queues a character to be rendered at a position (in pixels) on
      * the next render call.
@@ -148,28 +146,6 @@ private:
 
     };
 
-    // Path to the font data file
-    std::string font_path = "logs_font_data.json";
-
-    uint8_t font_width; // Width of each character in pixels
-    uint8_t font_height; // Width of each character in height
-
-    /**
-     * Multiplier the final character size will be multiplier by
-     */
-    float font_size_multiplier = 2.0; 
-
-    SDL_Texture* font_texture;
-
-    // Characters that are queued to render on the next render call
-    std::queue<QueuedRenderedCharacter> queued_characters;
-
-    // Positions of each char in the font png file
-    std::unordered_map<char, std::pair<uint8_t, uint8_t>> 
-        char_source_positions;
-
-    TextureHandler* texture_handler;
-
     /**
      * @brief Underlying method for rendering chars to the screen. 
      * 
@@ -207,4 +183,26 @@ private:
      * @param intial_size Integer to scale
      */
     int get_scaled_size_value(int intial_size);
+
+    // Path to the font data file
+    std::string font_path = "logs_font_data.json";
+
+    uint8_t font_width; // Width of each character in pixels
+    uint8_t font_height; // Width of each character in height
+
+    /**
+     * Multiplier the final character size will be multiplier by
+     */
+    float font_size_multiplier = 2.0; 
+
+    SDL_Texture* font_texture;
+
+    // Characters that are queued to render on the next render call
+    std::queue<QueuedRenderedCharacter> queued_characters;
+
+    // Positions of each char in the font png file
+    std::unordered_map<char, std::pair<uint8_t, uint8_t>> 
+        char_source_positions;
+
+    TextureHandler* texture_handler = nullptr;
 };

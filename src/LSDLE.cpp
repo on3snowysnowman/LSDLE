@@ -5,10 +5,22 @@
 #include "JsonLoader.h"
 #include "Debug.h"
 
+// Static Members
+
+int LSDLE::screen_width = 0;
+int LSDLE::screen_height = 0;
+
+InputHandler* LSDLE::input_handler = nullptr;
+TextureHandler* LSDLE::texture_handler = nullptr;
+
+
 // Constructors / Deconstructor 
 
 LSDLE::LSDLE(std::string _LSDLE_project_path)
 {
+    // Clear the Output Log
+    Debug::clear_debug_output_file();
+
     // Output the LSDLE file directory to an external file so other components
     // that need the LSDLE's directory can access it through this file
 
@@ -107,10 +119,13 @@ void LSDLE::start()
     simulation_loop();
 }
 
-int LSDLE::get_screen_width() const { return screen_width; }
+int LSDLE::get_screen_width() { return screen_width; }
 
-int LSDLE::get_screen_height() const { return screen_height; }
+int LSDLE::get_screen_height() { return screen_height; }
 
+InputHandler* LSDLE::get_input_handler() { return input_handler; }
+
+TextureHandler* LSDLE::get_texture_handler() { return texture_handler; }
 
 // Protected
 
@@ -146,6 +161,7 @@ void LSDLE::simulation_loop()
         menu_handler->update();
         update();
         clear_screen();
+        WindowManager::update();
         render();
         present_renderer();
 

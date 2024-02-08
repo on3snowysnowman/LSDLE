@@ -8,12 +8,10 @@
 
 MenuToolVariable::MenuToolVariable() {}
 
-MenuToolVariable::MenuToolVariable(ConsoleOutputHandler* 
-    _console_output_handler, InputHandler* _input_handler, 
+MenuToolVariable::MenuToolVariable(Window* _window, 
     MenuToolItem::StringType _str_type, std::string _cursor_color, 
-    std::string _name, std::string _content) 
-    : 
-    MenuToolItem(_console_output_handler, _input_handler, _cursor_color,
+    std::string _name, std::string _content) : 
+    MenuToolItem(_window, _cursor_color,
     VARIABLE)
 {
     str_type = _str_type;
@@ -44,7 +42,7 @@ MenuToolVariable::MenuToolVariable(ConsoleOutputHandler*
                     // Throw an error, since there can't be a float with two 
                     // decimal points
                     std::string message = "MenuToolVariable.MenuToolVariable"
-                        "(ConsoleOutputHandler* _console_output_handler, "
+                        "(ConsoleOutputHandler* _window, "
                         "InputHandler* _input_handler, MenuToolItem::"
                         "StringType _str_type, std::string _cursor_color, "
                         "std::string _name, std::string _content) -> Attempted"
@@ -61,7 +59,7 @@ MenuToolVariable::MenuToolVariable(ConsoleOutputHandler*
             {
                 // Throw an error, since there can't be a float with letters
                 std::string message = "MenuToolVariable.MenuToolVariable"
-                    "(ConsoleOutputHandler* _console_output_handler, "
+                    "(ConsoleOutputHandler* _window, "
                     "InputHandler* _input_handler, MenuToolItem::"
                     "StringType _str_type, std::string _cursor_color, "
                     "std::string _name, std::string _content) -> Attempted"
@@ -96,7 +94,7 @@ MenuToolVariable::MenuToolVariable(ConsoleOutputHandler*
             {
                 // Throw an error, since an int can't have a decimal point
                 std::string message = "MenuToolVariable.MenuToolVariable"
-                    "(ConsoleOutputHandler* _console_output_handler, "
+                    "(ConsoleOutputHandler* _window, "
                     "InputHandler* _input_handler, MenuToolItem::"
                     "StringType _str_type, std::string _cursor_color, "
                     "std::string _name, std::string _content) -> Attempted"
@@ -112,7 +110,7 @@ MenuToolVariable::MenuToolVariable(ConsoleOutputHandler*
             {
                 // Throw an error, since there can't be a float with letters
                 std::string message = "MenuToolVariable.MenuToolVariable"
-                    "(ConsoleOutputHandler* _console_output_handler, "
+                    "(ConsoleOutputHandler* _window, "
                     "InputHandler* _input_handler, MenuToolItem::"
                     "StringType _str_type, std::string _cursor_color, "
                     "std::string _name, std::string _content) -> Attempted"
@@ -147,45 +145,45 @@ MenuToolVariable::MenuToolVariable(ConsoleOutputHandler*
 void MenuToolVariable::render_no_status() const
 {
     uint16_t initial_c_o_cursor_x_pos = 
-        console_output_handler->get_cursor_position().first;
+        window->get_cursor_position().first;
     
-    console_output_handler->modify_cursor_position(3, 0);
-    console_output_handler->add_str(name);
-    console_output_handler->add_ch(':');
-    console_output_handler->add_str(" " + content);
-    console_output_handler->move_cursor_x(initial_c_o_cursor_x_pos);
-    console_output_handler->modify_cursor_position(0, 1);
+    window->modify_cursor_position(3, 0);
+    window->add_str(name);
+    window->add_ch(':');
+    window->add_str(" " + content);
+    window->set_cursor_x_position(initial_c_o_cursor_x_pos);
+    window->modify_cursor_position(0, 1);
 }
 
 void MenuToolVariable::render_hovered() const
 {
     uint16_t initial_c_o_cursor_x_pos = 
-        console_output_handler->get_cursor_position().first;
+        window->get_cursor_position().first;
 
-    console_output_handler->add_ch(' ');
-    console_output_handler->add_ch('>', cursor_color);
-    console_output_handler->add_ch(' ');
-    console_output_handler->add_str(name);
-    console_output_handler->add_str(": ");
-    console_output_handler->add_str(content);
-    console_output_handler->move_cursor_x(initial_c_o_cursor_x_pos);
-    console_output_handler->modify_cursor_position(0, 1);
+    window->add_ch(' ');
+    window->add_ch('>', cursor_color);
+    window->add_ch(' ');
+    window->add_str(name);
+    window->add_str(": ");
+    window->add_str(content);
+    window->set_cursor_x_position(initial_c_o_cursor_x_pos);
+    window->modify_cursor_position(0, 1);
 }
 
 void MenuToolVariable::render_selected() const
 {
     uint16_t initial_c_o_cursor_x_pos = 
-        console_output_handler->get_cursor_position().first;
+        window->get_cursor_position().first;
 
-    console_output_handler->add_str("  ");
-    console_output_handler->add_ch('>', cursor_color);
-    console_output_handler->add_ch(' ');
-    console_output_handler->add_str(name);
-    console_output_handler->add_str(": ");
-    console_output_handler->add_str(content, cursor_color);
-    console_output_handler->add_ch('_');
-    console_output_handler->move_cursor_x(initial_c_o_cursor_x_pos);
-    console_output_handler->modify_cursor_position(0, 1);
+    window->add_str("  ");
+    window->add_ch('>', cursor_color);
+    window->add_ch(' ');
+    window->add_str(name);
+    window->add_str(": ");
+    window->add_str(content, cursor_color);
+    window->add_ch('_');
+    window->set_cursor_x_position(initial_c_o_cursor_x_pos);
+    window->modify_cursor_position(0, 1);
 }
 
 MenuToolItem::Status MenuToolVariable::handle_input()

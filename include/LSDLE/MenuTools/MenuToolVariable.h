@@ -4,6 +4,7 @@
 #include "MenuToolItem.h"
 #include "../ConsoleOutputHandler.h"
 #include "../InputHandler.h"
+#include "Window.h"
 
 
 /**
@@ -23,8 +24,7 @@ class MenuToolVariable : public MenuToolItem
 public:
 
     MenuToolVariable();
-    MenuToolVariable(ConsoleOutputHandler* _console_output_handler,
-        InputHandler* _input_handler, StringType _str_type, 
+    MenuToolVariable(Window* window, StringType _str_type, 
         std::string _cursor_color, std::string _name,
         std::string _content = "");
 

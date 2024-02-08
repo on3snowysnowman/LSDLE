@@ -1,6 +1,5 @@
 #include "MenuHandler.h"
 
-
 // Constructors / Deconstructor
 
 MenuHandler::MenuHandler() {}
@@ -26,6 +25,8 @@ void MenuHandler::update()
 
 void MenuHandler::register_menu(Menu* m) 
 {
+    m->set_menu_handler(this);
+
     m->set_instruction_queue(&instruction_queue);
     registered_menus[m->get_id()] = m;
 }
@@ -63,6 +64,13 @@ void MenuHandler::deactivate_menu(Menu* m)
             return;
         }
     }
+}
+
+Menu* MenuHandler::get_menu(std::string menu_id)
+{
+    if(registered_menus.find(menu_id) == registered_menus.end()) return nullptr;
+
+    return registered_menus.at(menu_id);
 }
 
 

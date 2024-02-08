@@ -5,18 +5,14 @@
 #include "Json.h"
 #include "JsonLoader.h"
 #include "TextDisplayHandler.h"
+#include "LSDLE.h"
 
 
 // Constructors / Deconstructor
 
 TextDisplayHandler::TextDisplayHandler()
 {
-    texture_handler = nullptr;
-}
-
-TextDisplayHandler::TextDisplayHandler(TextureHandler* _texture_handler)
-{
-    texture_handler = _texture_handler;
+    texture_handler = LSDLE::get_texture_handler();
 
     std::fstream file_stream("path.txt", std::ios::in);
 
@@ -92,15 +88,21 @@ void TextDisplayHandler::clear_buffer()
     }
 }
 
+#include <iostream>
+
 void TextDisplayHandler::render()
 {
+
     while(!queued_characters.empty())
     {
-
         // Fetch the next character in the queue
         QueuedRenderedCharacter& targ_char = queued_characters.front();
         queued_characters.pop();
-        
+
+        // This is not a character that can be rendered
+        if(char_source_positions.find(targ_char.symbol) == 
+            char_source_positions.end()) return;
+
         // Get the characters position in the font texture
         std::pair<uint8_t, uint8_t>& character_source_position
             = char_source_positions.at(targ_char.symbol);
@@ -111,7 +113,7 @@ void TextDisplayHandler::render()
        
         // Get the SDL Rect for the destination data of this char
         SDL_Rect& destination_data = targ_char.destination;
-
+        
         // If this character is colored
         if(targ_char.colored)
         {

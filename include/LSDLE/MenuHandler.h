@@ -74,6 +74,15 @@ public:
      */
     void deactivate_menu(Menu* m);
 
+    /**
+     * @brief Returns the instance of the menu with the passed menu id. This is
+     * assuming that the menu exists and has been registered with the 
+     * MenuHandler. If the menu can't be found, a nullptr is returned.
+     * 
+     * @param menu_id Id of the menu to return
+     */
+    Menu* get_menu(std::string menu_id);
+
 private:
 
     /**

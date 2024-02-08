@@ -5,6 +5,7 @@
 #include "MenuToolItem.h"
 #include "../ConsoleOutputHandler.h"
 #include "../InputHandler.h"
+#include "Window.h"
 
 
 /**
@@ -23,8 +24,7 @@ class MenuToolList : public MenuToolItem
 public:
 
     MenuToolList();
-    MenuToolList(ConsoleOutputHandler* _console_output_handler,
-        InputHandler* _input_handler, std::string _cursor_color, 
+    MenuToolList(Window* window, std::string _cursor_color, 
         std::string _name, uint16_t _cursor_pos = 0, 
         int32_t _selected_pos = -1);
 

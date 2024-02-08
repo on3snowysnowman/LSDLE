@@ -3,6 +3,7 @@
 #include "MenuToolItem.h"
 #include "../ConsoleOutputHandler.h"
 #include "../InputHandler.h"
+#include "Window.h"
 
 
 /**
@@ -20,8 +21,7 @@ public:
 
 
     MenuToolChoice();
-    MenuToolChoice(ConsoleOutputHandler* _console_output_handler, 
-        InputHandler* _input_handler, std::string _cursor_color, 
+    MenuToolChoice(Window* window, std::string _cursor_color, 
         std::string _name, uint8_t _choice_index);
 
     /**
@@ -56,8 +56,8 @@ public:
     // Name of the choice selections
     std::string name;
 
-    // Color of the cursor
-    std::string cursor_color;
+    // // Color of the cursor
+    // std::string cursor_color;
 
     // List of the choices
     std::vector<ColorString> choices;
