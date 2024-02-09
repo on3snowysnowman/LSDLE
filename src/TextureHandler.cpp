@@ -34,8 +34,10 @@ TextureHandler::TextureHandler(SDL_Renderer* _renderer, std::string _color_data_
 void TextureHandler::draw(SDL_Texture* texture, SDL_Rect& source, 
     SDL_Rect& dest) const
 {
+    draw_with_color(texture, source, dest, "White");
+
     // Draw to the screen
-    SDL_RenderCopy(renderer, texture, &source, &dest);
+    // SDL_RenderCopy(renderer, texture, &source, &dest);
 }
 
 void TextureHandler::draw_with_color(SDL_Texture* texture, SDL_Rect& source,
@@ -71,6 +73,9 @@ void TextureHandler::draw_with_color(SDL_Texture* texture, SDL_Rect& source,
     // Restore the original color modulation values
     SDL_SetTextureColorMod(texture, originalColor.r, originalColor.g, originalColor.b);
 }
+
+const std::unordered_map<std::string, Color>* TextureHandler::get_colors()
+    { return &colors; }
 
 SDL_Texture* TextureHandler::create_texture(const char* path) const
 {

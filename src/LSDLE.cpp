@@ -46,6 +46,8 @@ LSDLE::LSDLE(std::string _LSDLE_project_path)
         exit(1);
     }
 
+    SDL_ShowCursor(SDL_DISABLE);
+
     if(init_data["fullscreen"])
     {
         Debug::log("Fullscreen : true");
@@ -94,8 +96,6 @@ LSDLE::LSDLE(std::string _LSDLE_project_path)
 
     input_handler = new InputHandler;
     texture_handler = new TextureHandler(renderer, LSDLE_project_path + "/colors.json");
-
-    menu_handler = new MenuHandler;
 
     // Set the background color of the renderer
     SDL_SetRenderDrawColor(renderer, 
@@ -158,7 +158,7 @@ void LSDLE::simulation_loop()
 
         input_handler->update();
         handle_events();
-        menu_handler->update();
+        MenuHandler::update();
         update();
         clear_screen();
         WindowManager::update();

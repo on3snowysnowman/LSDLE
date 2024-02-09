@@ -2,10 +2,10 @@
 
 #include <cstdint>
 
-#include "../ConsoleOutputHandler.h"
-#include "../InputHandler.h"
+#include "ConsoleOutputHandler.h"
+#include "InputHandler.h"
 #include "MenuToolItem.h"
-#include "../ColorString.h"
+#include "ColorString.h"
 #include "SimulationDataContainers.h"
 #include "Window.h"
 
@@ -29,6 +29,13 @@ public:
     void render_colored_number(uint16_t num, uint16_t lower_bound, 
         uint16_t higher_bound, std::vector<std::string> colors = {"Red", 
             "Orange", "Yellow", "Green"});
+
+    void render_multi_colored_meter(uint16_t num, uint16_t minimum, 
+        uint16_t maximum, std::vector<std::string> colors = 
+        {"Red", "Orange", "Yellow", "Green"});
+
+    void render_single_color_meter(uint16_t, uint16_t minimum, 
+        uint16_t maximum, std::string color);
 
     /**
      * @brief Provides a list selection to the user using an LSDC as the data
@@ -92,6 +99,12 @@ private:
      * for the sake of readability.
      */
     void handle_menu_simulation_input(MenuSimulationDataContainer& m_s_d_c);
+
+    void render_meter(uint16_t num, uint16_t maximum, uint8_t num_ticks, 
+        std::string color);
+
+    uint8_t calculate_index(uint16_t num,  uint16_t lower_bound, 
+        uint16_t higher_bound, uint8_t num_indexes);
 
     InputHandler* input_handler;
 

@@ -28,7 +28,7 @@ struct ListSelectionDataContainer
     }
     
     // If the enter key will be blocked until released on button presses
-    bool block_enter_key = false;
+    bool block_enter_key = true;
 
     /**
      * If an item in the content has been selected
@@ -72,7 +72,7 @@ struct MenuSimulationDataContainer
     }
 
     // If the enter key will be blocked until released on button presses
-    bool block_enter_key = false;
+    bool block_enter_key = true;
     
     // Position of the cursor in the content
     uint8_t cursor_pos {};

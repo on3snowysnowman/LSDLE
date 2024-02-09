@@ -2,6 +2,7 @@
 #include "LSDLE.h"
 
 #include <iostream>
+
 // Constructors / Deconstructor
 
 MenuTools::MenuTools() {}
@@ -18,21 +19,62 @@ MenuTools::MenuTools(Window* _window)
 
 void MenuTools::render_colored_number(uint16_t num, uint16_t lower_bound,
     uint16_t higher_bound, std::vector<std::string> colors)
-{
-    float ratio = 1;
-
-    if(num < higher_bound)
+{   
+    if(num >= higher_bound)
     {
-        num -= lower_bound;
-        higher_bound -= lower_bound;
-        lower_bound = 0; 
-
-        ratio = float(num / (higher_bound * 1.0));
+        window->add_str(std::to_string(num), *(--colors.end()));
+        return;
     }
 
-    uint8_t index = colors.size() * ratio;
+    uint8_t index = calculate_index(num, lower_bound, higher_bound, 
+        colors.size());
     
     window->add_str(std::to_string(num), colors.at(index));
+}
+
+void MenuTools::render_multi_colored_meter(uint16_t num, uint16_t minimum,
+    uint16_t maximum, std::vector<std::string> colors)
+{
+    uint8_t num_ticks;
+
+    if(num >= maximum) num_ticks = 10;
+
+    else if(num == 0) num_ticks = 0;
+
+    else 
+    {
+        num_ticks = calculate_index(num, minimum, maximum, 10); 
+
+        (num_ticks == 0) ? ++num_ticks : 0;
+    }
+
+    uint8_t color_index = colors.size() - 1;
+
+    if(num < maximum)
+        color_index = calculate_index(num, minimum, maximum, 
+            colors.size());
+
+    render_meter(num, maximum, num_ticks, colors.at(color_index));
+}
+
+void MenuTools::render_single_color_meter(uint16_t num, uint16_t minimum,
+    uint16_t maximum, std::string color)
+{
+    uint8_t num_ticks;
+
+    if(num >= maximum) num_ticks = 10;
+
+    else if(num == 0) num_ticks = 0;
+
+    else
+    {
+        num_ticks = calculate_index(num, minimum, maximum, 10);
+        
+        (num_ticks == 0) ? ++num_ticks : 0;
+    }
+
+    render_meter(num, maximum, num_ticks, color);
+
 }
 
 void MenuTools::simulate_list_selection(
@@ -106,9 +148,7 @@ void MenuTools::handle_list_selection_input(ListSelectionDataContainer&
             case SDLK_RETURN:
 
                 if(l_s_d_c.block_enter_key) 
-                {
                     input_handler->block_key_until_released(SDLK_RETURN);
-                }
 
                 else
                 {
@@ -233,7 +273,19 @@ void MenuTools::handle_menu_simulation_input(MenuSimulationDataContainer&
                 // Select an item
                 case SDLK_RETURN:
 
-                    input_handler->block_key_until_released(SDLK_RETURN);
+                    if(m_s_d_c.block_enter_key) 
+                        input_handler->block_key_until_released(SDLK_RETURN);
+
+                    else
+                    {
+                        ItemType item_type = m_s_d_c.content.at(
+                            m_s_d_c.cursor_pos)->get_item_type();
+
+                        if(item_type == CHOICE || item_type == LIST || 
+                            item_type == TEXT_LIST)
+                            input_handler->block_key_until_released
+                            (SDLK_RETURN);
+                    }
 
                     m_s_d_c.selected_pos = m_s_d_c.cursor_pos;
 
@@ -299,3 +351,33 @@ void MenuTools::handle_menu_simulation_input(MenuSimulationDataContainer&
         }
     }
 }
+
+void MenuTools::render_meter(uint16_t num, uint16_t maximum, uint8_t num_ticks,
+    std::string color)
+{
+    window->add_str(std::to_string(num) + " [");
+
+    for(uint8_t i = 0; i < num_ticks; ++i)
+    {
+        window->add_ch('/', color);
+    }
+
+    while(num_ticks < 10)
+    {
+        window->add_ch('/');
+        ++num_ticks;
+    }
+
+    window->add_str("] " + std::to_string(maximum));
+}
+
+uint8_t MenuTools::calculate_index(uint16_t num, uint16_t lower_bound, 
+    uint16_t higher_bound, uint8_t num_indexes)
+{
+    float ratio = float((num - lower_bound) / 
+        ((higher_bound - lower_bound) * 1.0));
+
+    return num_indexes * ratio;
+}
+
+

@@ -41,6 +41,8 @@ public:
      */
     void render_selected() const final;
 
+    std::string get_choice();
+
     /**
      * @brief Handles the input from the user while selected. This includes
      * navigating the choice list and selecting them.

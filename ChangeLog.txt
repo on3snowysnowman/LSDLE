@@ -1,12 +1,11 @@
 # Version 1.1.0
 
-  CHANGES :
+ CHANGES:
 
- - Reconfigured the Menu system so that it can include the MenuHandler header
-   file, as well as the MenuHandler being able to include the Menu.h file so 
-   now both classes can communicate with eachother, allowing for Menus to 
-   easily being able to get pointer instances to other menus by a request to
-   the MenuHandler
+ - Reconfigured the MenuHandler to be a public static class so individual menus
+   can now automatically register themselves with the MenuHandler, along with 
+   requesting instances of individual registered menus of different menu 
+   classes.
 
  - The LSDLE engine now has static pointers to the InputHandler and 
    TextureHandler, along with public static methods to fetch these. This allows
@@ -28,21 +27,38 @@
    worry about rendering their window each frame. All that needs to be done is
    to add content to it, and the rendering will be handled by the engine.
 
-  - Created an EventSystem for the Engine. This allows any object to 
-    "subscribe" to the EventSystem and pass a void return function instance
-    that they would like to be run when said event is triggered.
+ - Created an EventSystem for the Engine. This allows any object to 
+   "subscribe" to the EventSystem and pass a void return function instance
+   that they would like to be run when said event is triggered.
 
-  - Added an "anchoring" system to the ConsoleOutputHandler. This allows the 
-    user to determine where the x position of the cursor should be placed when
-    a newline is called. This is especially useful when outputting to the 
-    middle of the screen, and simply wanted to input a new line and have it be
-    placed at the beginning of the place in the middle of the screen that they
-    are rendering to.
+ - Added an "anchoring" system to the ConsoleOutputHandler. This allows the 
+   user to determine where the x position of the cursor should be placed when
+   a newline is called. This is especially useful when outputting to the 
+   middle of the screen, and simply wanted to input a new line and have it be
+   placed at the beginning of the place in the middle of the screen that they
+   are rendering to.
 
-  FIXES :
+ - Added a render_colored_number to the MenuTools.
 
-- Fixed a bug where MenuTools menu and list simulation would crash if empty
-  content was passed to it through the DataContainers
+ - Changed the MenuToolButton to render its brackets surrounding the button
+   name as white, and not the color of the button.
+
+ - Added a get_choice method to the MenuToolChoice to get the string that is
+   currently chosen 
+
+ - Configured the MenuTools in the simulate menu method to autmoatically block
+   the enter key if the selected item is of type CHOICE, LIST, or TEXT_LIST
+
+ FIXES:
+
+ - Fixed a bug where MenuTools menu and list simulation would crash if empty
+   content was passed to it through the DataContainers
+
+ - Fixed MenuToolChoice so that it now checks for available keys in its
+   input handling instead of raw keys
+
+ - Fixed bug in MenuToolChoice where moving the cursor down with shift+s would
+   place the cursor index out of bounds
 
 
 

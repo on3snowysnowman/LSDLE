@@ -3,4 +3,5 @@
 
 #include "EventSystem.h"
 
-std::unordered_map<std::string, std::unique_ptr<SubscriptionBase>> CallbackManager::subscriptions;
+std::unordered_map<std::string, 
+    std::vector<SubscriptionBase*>> CallbackManager::subscriptions;

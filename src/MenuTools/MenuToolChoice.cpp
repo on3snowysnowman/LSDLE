@@ -96,11 +96,15 @@ void MenuToolChoice::render_selected() const
     }
 }
 
+std::string MenuToolChoice::get_choice() 
+    { return choices.at(choice_index).content; }
+
 MenuToolItem::Status MenuToolChoice::handle_input() 
 {
-    const std::vector<uint32_t>* keys = &input_handler->get_raw_keys();
+    const std::vector<uint32_t> keys = 
+        input_handler->get_all_pressed_and_available_keys();
 
-    for(uint32_t key : *keys)
+    for(uint32_t key : keys)
     {
         switch(key)
         {
@@ -127,12 +131,12 @@ MenuToolItem::Status MenuToolChoice::handle_input()
 
             case SDLK_s:
 
-                input_handler->set_delay(SDLK_w, 10);
+                input_handler->set_delay(SDLK_s, 10);
 
                 if(input_handler->is_key_pressed(SDLK_LSHIFT) || 
                     input_handler->is_key_pressed(SDLK_RSHIFT))
                 {
-                    cursor_index = choices.size();
+                    cursor_index = choices.size() - 1;
                     return SELECTED;
                 }
 

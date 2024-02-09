@@ -25,9 +25,9 @@ void MenuToolButton::render_no_status() const
         window->get_cursor_position().first;
 
     window->modify_cursor_position(3, 0);
-    window->add_ch('[', button_color);
+    window->add_ch('[');
     window->add_str(name, button_color);
-    window->add_ch(']', button_color);
+    window->add_ch(']');
     window->set_cursor_x_position(
         initial_c_o_cursor_x_pos);
     window->modify_cursor_position(0, 1);
@@ -41,9 +41,9 @@ void MenuToolButton::render_hovered() const
     window->add_ch(' ');
     window->add_ch('>', cursor_color);
     window->add_ch(' ');
-    window->add_ch('[', button_color);
+    window->add_ch('[');
     window->add_str(name, button_color);
-    window->add_ch(']', button_color);
+    window->add_ch(']');
     window->set_cursor_x_position(
         initial_c_o_cursor_x_pos);
     window->modify_cursor_position(0, 1);
@@ -57,9 +57,9 @@ void MenuToolButton::render_selected() const
     window->add_ch(' ');
         window->add_ch('>', cursor_color);
         window->add_ch(' ');
-        window->add_ch('[', cursor_color);
+        window->add_ch('[');
         window->add_str(name, button_color);
-        window->add_ch(']', cursor_color);
+        window->add_ch(']');
         window->set_cursor_x_position(
             initial_c_o_cursor_x_pos);
         window->modify_cursor_position(0, 1);

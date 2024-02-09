@@ -9,8 +9,6 @@
 #include "MenuTools.h"
 #include "InputHandler.h"
 
-class MenuHandler;
-    
 /**
  * @brief Base class for creating derived menus with specific logic.
  * 
@@ -31,16 +29,17 @@ class Menu
 
 public:
 
-    Menu(uint16_t start_x, uint16_t start_y, uint16_t end_x, uint16_t end_y);
+    Menu(uint16_t start_x, uint16_t start_y, uint16_t end_x, uint16_t end_y,
+        std::string menu_id);
     
-    /**
-     * @brief Sets the instruction queue of this Menu.
-     * 
-     * 
-     * @param _instruction_queue 
-     */
-    void set_instruction_queue(std::queue<InstructionSequence>* 
-        _instruction_queue);
+    // /**
+    //  * @brief Sets the instruction queue of this Menu.
+    //  * 
+    //  * 
+    //  * @param _instruction_queue 
+    //  */
+    // void set_instruction_queue(std::queue<InstructionSequence>* 
+    //     _instruction_queue);
 
     /**
      * @brief Called when the Menu is activated.
@@ -57,7 +56,7 @@ public:
      */
     virtual void update();
 
-    void set_menu_handler(MenuHandler* menu_handler);
+    // void set_menu_handler(MenuHandler* menu_handler);
 
     /**
      * @brief Flags this Menu as activated.
@@ -92,20 +91,18 @@ protected:
     std::string menu_id = "BaseMenu";
 
 
-    /**
-     * The instruction_queue points to the instruction queue object in the 
-     * MenuHandler class. Menus will place InstructionSequences inside this 
-     * queue, and the MenuHandler will read and process them each frame. This 
-     * is how the Menus are able to communicate with the MenuHandler without
-     * needed to include the MenuHandler, causing circular imports.
-     */
-    std::queue<InstructionSequence>* instruction_queue;
+    // /**
+    //  * The instruction_queue points to the instruction queue object in the 
+    //  * MenuHandler class. Menus will place InstructionSequences inside this 
+    //  * queue, and the MenuHandler will read and process them each frame. This 
+    //  * is how the Menus are able to communicate with the MenuHandler without
+    //  * needed to include the MenuHandler, causing circular imports.
+    //  */
+    // std::queue<InstructionSequence>* instruction_queue;
 
     Window* window;
 
     MenuTools* menu_tools;
 
     InputHandler* input_handler;
-
-    MenuHandler* m_handler;
 };

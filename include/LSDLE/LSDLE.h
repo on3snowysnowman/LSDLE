@@ -66,8 +66,6 @@ protected:
     static InputHandler* input_handler;
     static TextureHandler* texture_handler;
 
-    MenuHandler* menu_handler;
-
 private:
 
     /**

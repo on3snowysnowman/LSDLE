@@ -48,6 +48,8 @@ public:
     void draw_with_color(SDL_Texture* texture, SDL_Rect& source, 
         SDL_Rect& dest, std::string color) const;
 
+    const std::unordered_map<std::string, Color>* get_colors();
+
 
     /**
      * Creates and returns an SDL_Texture from a png at the path file.

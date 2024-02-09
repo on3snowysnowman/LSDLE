@@ -1,33 +1,39 @@
 #include "MenuHandler.h"
 
-// Constructors / Deconstructor
+// Static Members
 
-MenuHandler::MenuHandler() {}
+std::list<Menu*> MenuHandler::active_menus;
+
+std::unordered_map<std::string, Menu*> MenuHandler::registered_menus;
 
 
 // Public
 
 void MenuHandler::update()
 {
-    for(Menu* m : active_menus)
-    {
-        m->update();
-    }
+    if(active_menus.size() > 0) active_menus.front()->update();
 
-    while(!instruction_queue.empty())
-    {
-        InstructionSequence& i = instruction_queue.front();
-        instruction_queue.pop();
+    // for(Menu* m : active_menus)
+    // {
+    //     m->update();
+    // }
 
-        process_instruction(i);
-    }
+
+
+    // while(!instruction_queue.empty())
+    // {
+    //     InstructionSequence& i = instruction_queue.front();
+    //     instruction_queue.pop();
+
+    //     process_instruction(i);
+    // }
 }
+
+#include <iostream>
 
 void MenuHandler::register_menu(Menu* m) 
 {
-    m->set_menu_handler(this);
 
-    m->set_instruction_queue(&instruction_queue);
     registered_menus[m->get_id()] = m;
 }
 
@@ -76,29 +82,29 @@ Menu* MenuHandler::get_menu(std::string menu_id)
 
 // Private
 
-void MenuHandler::process_instruction(InstructionSequence& i)
-{
-    std::string instruction = get_next_instruction(i);
+// void MenuHandler::process_instruction(InstructionSequence& i)
+// {
+//     std::string instruction = get_next_instruction(i);
 
-    if(instruction == "activate_menu")
-    {
-        instruction = get_next_instruction(i);
+//     if(instruction == "activate_menu")
+//     {
+//         instruction = get_next_instruction(i);
 
-        activate_menu(instruction);
-    }
+//         activate_menu(instruction);
+//     }
 
-    else if(instruction == "deactivate_menu")
-    {
-        instruction = get_next_instruction(i);
+//     else if(instruction == "deactivate_menu")
+//     {
+//         instruction = get_next_instruction(i);
 
-        deactivate_menu(instruction);
-    }
-}
+//         deactivate_menu(instruction);
+//     }
+// }
 
-std::string MenuHandler::get_next_instruction(InstructionSequence& i) const
-{
-    std::string instruction = i.instructions.front();
-    i.instructions.pop();
+// std::string MenuHandler::get_next_instruction(InstructionSequence& i) 
+// {
+//     std::string instruction = i.instructions.front();
+//     i.instructions.pop();
 
-    return instruction;
-}
+//     return instruction;
+// }
