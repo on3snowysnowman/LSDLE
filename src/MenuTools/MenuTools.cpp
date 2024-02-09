@@ -364,7 +364,7 @@ void MenuTools::render_meter(uint16_t num, uint16_t maximum, uint8_t num_ticks,
 
     while(num_ticks < 10)
     {
-        window->add_ch('/');
+        window->add_ch(' ');
         ++num_ticks;
     }
 

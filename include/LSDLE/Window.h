@@ -21,6 +21,8 @@ public:
     void resize_window(uint16_t start_x, uint16_t start_y, uint16_t end_x, 
         uint16_t end_y);
 
+    void reset_cursor_position();
+    void reset_anchor();
     void modify_cursor_position(uint16_t delta_x, uint16_t delta_y);
     void set_cursor_x_position(uint16_t x);
     void set_cursor_y_position(uint16_t y);

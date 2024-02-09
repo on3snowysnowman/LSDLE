@@ -36,6 +36,11 @@ void Window::resize_window(uint16_t _start_x, uint16_t _start_y,
     end_y = _end_y;
 }
 
+void Window::reset_cursor_position() 
+{ console_output_handler->reset_cursor_position(); }
+
+void Window::reset_anchor() { console_output_handler->set_anchor(0); }
+
 void Window::modify_cursor_position(uint16_t delta_x, uint16_t delta_y) 
 {
     console_output_handler->modify_cursor_position(delta_x, delta_y);

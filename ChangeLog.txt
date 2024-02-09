@@ -1,4 +1,4 @@
-# Version 1.1.0
+# Version 1.1
 
  CHANGES:
 
@@ -48,6 +48,14 @@
 
  - Configured the MenuTools in the simulate menu method to autmoatically block
    the enter key if the selected item is of type CHOICE, LIST, or TEXT_LIST
+
+ - Added a fetch_int feature to the MenuToolVariable to handle converting its
+   content to an integer, and handling an overflow error if it happens
+  
+ - Added a LNumericLimits file that contains the numeric limit of a uint16_t
+
+ - Added addition handling in the LMath file that can check for an overflow
+   between two uint16_ts and handle it accordingly
 
  FIXES:
 

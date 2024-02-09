@@ -34,7 +34,7 @@ public:
         uint16_t maximum, std::vector<std::string> colors = 
         {"Red", "Orange", "Yellow", "Green"});
 
-    void render_single_color_meter(uint16_t, uint16_t minimum, 
+    void render_single_color_meter(uint16_t num, uint16_t minimum, 
         uint16_t maximum, std::string color);
 
     /**

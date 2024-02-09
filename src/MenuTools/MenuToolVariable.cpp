@@ -1,7 +1,6 @@
-#include <iostream>
-
-#include "MenuToolVariable.h"
 #include "Debug.h"
+#include "MenuToolVariable.h"
+#include "LNumericLimits.h"
 
 
 // Constructors / Deconstructor
@@ -195,6 +194,26 @@ MenuToolItem::Status MenuToolVariable::handle_input()
     return (this->*targ_input_handling_function)();
 }
 
+uint16_t MenuToolVariable::fetch_int()
+{
+    uint16_t num {};
+
+    // Attempt to convert the content to an int
+    try
+    {
+        num = std::stoi(content);
+        return num;
+    }
+
+    // Numeric interpretation of the string was too large
+    catch(std::out_of_range)
+    {
+        Debug::log("MenuToolVariable.fetch_int() : Attempted conversion of "
+            "content caused an overflow error", Debug::WARN);
+
+        return LNumericLimits::UINT16_LIMIT;
+    }
+}
 
 // Private
 

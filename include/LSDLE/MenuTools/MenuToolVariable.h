@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 
 #include "MenuToolItem.h"
 #include "../ConsoleOutputHandler.h"
@@ -52,6 +53,8 @@ public:
      * @return Status 
      */
     Status handle_input() final;
+
+    uint16_t fetch_int();
 
     // Name of the variable
     std::string name;
