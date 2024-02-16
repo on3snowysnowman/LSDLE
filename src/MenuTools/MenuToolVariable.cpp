@@ -2,6 +2,8 @@
 #include "MenuToolVariable.h"
 #include "LNumericLimits.h"
 
+#include <iostream>
+
 
 // Constructors / Deconstructor
 
@@ -20,6 +22,9 @@ MenuToolVariable::MenuToolVariable(Window* _window,
     // If the type of this Variable is a float
     if(str_type == StringType::FLOAT)
     {
+        // Set the input handling function to the FLOAT one
+        targ_input_handling_function = &MenuToolVariable::handle_float_input;
+
         if(content.size() == 0) 
         {
             content.push_back('0');
@@ -69,17 +74,18 @@ MenuToolVariable::MenuToolVariable(Window* _window,
                 exit(0);
             }
         }
-
-        // Set the input handling function to the FLOAT one
-        targ_input_handling_function = &MenuToolVariable::handle_float_input;
     }
 
     // If the type of the Variable is an int
     else if(str_type == StringType::INT)
     {
+        // Set the input handling function to the INT one.
+        targ_input_handling_function = &MenuToolVariable::handle_int_input;
+
         if(content.size() == 0)
         {
             content.push_back('0');
+            
             return;
         }
 
@@ -120,9 +126,6 @@ MenuToolVariable::MenuToolVariable(Window* _window,
                 exit(0);
             }
         }
-
-        // Set the input handling function to the INT one.
-        targ_input_handling_function = &MenuToolVariable::handle_int_input;
     }
 
     // The type of the Variable is a string
@@ -191,7 +194,11 @@ MenuToolItem::Status MenuToolVariable::handle_input()
     // set during the construction of this object, and changes depending on 
     // type of the Variable.
 
-    return (this->*targ_input_handling_function)();
+    MenuToolItem::Status status = (this->*targ_input_handling_function)();
+
+    return status;
+
+    // return (this->*targ_input_handling_function)();
 }
 
 uint16_t MenuToolVariable::fetch_int()
@@ -281,8 +288,7 @@ MenuToolItem::Status MenuToolVariable::handle_float_input()
 
 MenuToolItem::Status MenuToolVariable::handle_int_input()
 {
-     const std::vector<uint32_t>* KEYS = &input_handler->get_raw_keys();
-
+    const std::vector<uint32_t>* KEYS = &input_handler->get_raw_keys();
 
     // Iterate through each pressed key
     for(uint32_t key : *KEYS)
@@ -319,7 +325,6 @@ MenuToolItem::Status MenuToolVariable::handle_int_input()
             content.push_back(char(key));
         }
     }
-
 
     return SELECTED;
 }

@@ -142,6 +142,8 @@ public:
      */
     void set_anchor(uint16_t _anchor);
 
+    std::pair<uint16_t, uint16_t> get_cursor_position_in_pixels();
+
     /**
      * @brief Returns the cursor's position.
      * 

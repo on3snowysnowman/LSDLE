@@ -6,6 +6,7 @@ add_library(LSDLE STATIC ${SOURCES}
     src/ConsoleOutputHandler.cpp
     src/EventSystem.cpp
     src/InputHandler.cpp
+    src/LRandom.cpp
     src/LSDLE.cpp
     src/Menu.cpp
     src/MenuHandler.cpp
@@ -14,7 +15,6 @@ add_library(LSDLE STATIC ${SOURCES}
     src/TextureHandler.cpp
     src/Window.cpp
 
-    src/MenuTools/MenuToolButton.cpp
     src/MenuTools/MenuToolChoice.cpp
     src/MenuTools/MenuToolItem.cpp
     src/MenuTools/MenuToolList.cpp

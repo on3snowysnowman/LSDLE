@@ -27,17 +27,7 @@ public:
 
     void invoke() final 
     {
-        
-        // If there is an object associated with this Subscription
-        if (objPtr) 
-        {
-            callback_function(*objPtr);
-            return;
-        } 
-        
-        // No valid object found
-        std::cerr << "Error: Invalid object pointer." << std::endl;
-
+        callback_function(*objPtr);
     }
 
 private:

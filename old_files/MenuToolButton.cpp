@@ -8,8 +8,8 @@ MenuToolButton::MenuToolButton() : MenuToolItem()
     item_type = BUTTON;
 }
 
-MenuToolButton::MenuToolButton(Window* _window, std::string _name, std::string _cursor_color, 
-    std::string _button_color)
+MenuToolButton::MenuToolButton(Window* _window, std::string _name, 
+    std::string _cursor_color, std::string _button_color)
     : MenuToolItem(_window, _cursor_color, BUTTON)
 {
     name = _name;

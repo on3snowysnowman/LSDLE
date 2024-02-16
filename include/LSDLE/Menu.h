@@ -68,6 +68,9 @@ public:
      */
     void flag_deactivated();
 
+
+    void deactivate_menu();
+
     /**
      * @brief Returns true if this Menu is activated
      */

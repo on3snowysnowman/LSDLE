@@ -3,5 +3,5 @@
     "width" : 500,
     "height" : 500,
     "fullscreen" : true,
-     "background_color" : [25, 25, 45]
+     "background_color" : [20, 20, 30]
 }

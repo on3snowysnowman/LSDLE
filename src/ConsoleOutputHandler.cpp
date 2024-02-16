@@ -135,6 +135,15 @@ void ConsoleOutputHandler::set_anchor(uint16_t _anchor)
     anchor = _anchor;
 }
 
+std::pair<uint16_t, uint16_t> ConsoleOutputHandler::
+    get_cursor_position_in_pixels()
+{
+    return {
+        cursor_position.first * text_display_handler.get_scaled_font_width(), 
+        cursor_position.second * text_display_handler.get_scaled_font_height()
+        };
+}
+
 const std::pair<uint16_t, uint16_t>& ConsoleOutputHandler::
     get_cursor_position() const { return cursor_position; }
 

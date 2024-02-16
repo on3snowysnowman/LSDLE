@@ -34,8 +34,6 @@ const std::unordered_map<char, char> MenuToolItem::KEYS_TO_SHIFTED_KEYS
 };
 
 
-#include <iostream>
-
 // Constructors / Deconstructor
 
 MenuToolItem::MenuToolItem() {}
@@ -43,7 +41,6 @@ MenuToolItem::MenuToolItem() {}
 MenuToolItem::MenuToolItem(Window* _window, std::string _cursor_color, 
     ItemType _item_type)
 {
-
     window = _window;
     input_handler = LSDLE::get_input_handler();
 

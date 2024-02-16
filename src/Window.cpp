@@ -12,6 +12,8 @@ Window::Window(uint16_t _start_x, uint16_t _start_y, uint16_t _end_x,
 
     texture_handler = LSDLE::get_texture_handler();
 
+    sprite_handler = new SpriteHandler();
+
     console_output_handler = new ConsoleOutputHandler(_start_x + border_size, 
         _start_y + border_size, _end_x - border_size, _end_y - border_size);
 
@@ -25,6 +27,7 @@ Window::Window(uint16_t _start_x, uint16_t _start_y, uint16_t _end_x,
 void Window::render()
 {
     console_output_handler->render();
+    sprite_handler->render();
 }
 
 void Window::resize_window(uint16_t _start_x, uint16_t _start_y,
@@ -114,6 +117,15 @@ void Window::add_str_at_pixel_position(std::string str, uint16_t x, uint16_t y,
     text_display_handler->add_str(str, x, y, color);
 }
 
+void Window::add_sprite_at_cursor_pos(Sprite* s)
+{
+    std::pair<uint16_t, uint16_t> cursor_pos_in_pixels = 
+        console_output_handler->get_cursor_position_in_pixels();
+        
+    sprite_handler->render_sprite(s, cursor_pos_in_pixels.first + 
+    border_size, cursor_pos_in_pixels.second + border_size);
+}
+
 const std::pair<uint16_t, uint16_t>& Window::get_cursor_position() 
     { return console_output_handler->get_cursor_position(); }
 
@@ -125,8 +137,6 @@ const std::pair<uint16_t, uint16_t>& Window::get_cursor_position()
 // Static Members
 
 std::vector<Window*> WindowManager::windows;
-
-#include <iostream>
 
 // Public
 

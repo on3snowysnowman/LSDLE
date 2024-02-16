@@ -1,56 +1,95 @@
+
 #pragma once
 
 #include <string>
+#include <functional>
 
 #include "MenuToolItem.h"
-#include "../ConsoleOutputHandler.h"
-#include "../InputHandler.h"
+#include "ConsoleOutputHandler.h"
+#include "InputHandler.h"
 #include "SimulationDataContainers.h"
 #include "Window.h"
 
 
-/**
- * @brief A MenuToolItem, used in the MenuTools' menu simulation.
- * 
- * The MenuToolButton acts as a selectable button for the user to "select".
- * Other than being able to be selected, the button has no further purpose.
- * This acts as a "flag" for whatever is handling the menu simulation's 
- * output that this button has been pressed, and they may want to run 
- * logic in accordance to that happening.
- */
+template<typename T>
 class MenuToolButton : public MenuToolItem
 {
 
 public:
 
-    MenuToolButton();
-    MenuToolButton(Window* window, std::string _name, 
-        std::string cursor_color, std::string _button_color = "White");
-    
-    /**
-     * @brief Render the Button with the understanding that it has no status
-     * (it is not hovered or selected)
-     */
-    void render_no_status() const final;
+    MenuToolButton() = delete;
 
-    /**
-     * @brief Render the Button with the understanding it is hovered by the 
-     * cursor.
-     */
-    void render_hovered() const final;
+    MenuToolButton(T* _object_ptr, std::function<void(T&)> 
+        _callback_function, Window* window, std::string _name, 
+        std::string _cursor_color, std::string _button_color) : MenuToolItem(window, _cursor_color, BUTTON)
+    {
+        name = _name;
+        button_color = _button_color;
+        object_ptr = _object_ptr;
+        callback_function = _callback_function;
+    }
 
-    /**
-     * @brief Render the Button with the understanding it is selected
-     */
-    void render_selected() const final;
+    void render_no_status() const final
+    {
+        uint16_t initial_c_o_cursor_x_pos = 
+        window->get_cursor_position().first;
 
-    /**
-     * @brief The Button does not handle any user input. It returns the 
-     * HOVERED status since the Button does not need to remain selected 
-     * after it has been pressed.
-     */
-    Status handle_input() final;
+        window->modify_cursor_position(3, 0);
+        // window->add_ch('[');
+        window->add_str(name, button_color);
+        // window->add_ch(']');
+        window->set_cursor_x_position(
+            initial_c_o_cursor_x_pos);
+        window->modify_cursor_position(0, 1);
+    }
+
+    void render_hovered() const final
+    {
+        uint16_t initial_c_o_cursor_x_pos = 
+        window->get_cursor_position().first;
+
+        window->add_ch(' ');
+        window->add_ch('>', cursor_color);
+        window->add_ch(' ');
+        // window->add_ch('[');
+        window->add_str(name, button_color);
+        // window->add_ch(']');
+        window->set_cursor_x_position(
+            initial_c_o_cursor_x_pos);
+        window->modify_cursor_position(0, 1);
+    }
+
+    void render_selected() const final
+    {
+        uint16_t initial_c_o_cursor_x_pos = 
+        window->get_cursor_position().first;
+
+        window->add_ch(' ');
+        window->add_ch('>', cursor_color);
+        window->add_ch(' ');
+        // window->add_ch('[');
+        window->add_str(name, button_color);
+        // window->add_ch(']');
+        window->set_cursor_x_position(
+            initial_c_o_cursor_x_pos);
+        window->modify_cursor_position(0, 1);
+    }
+
+    Status handle_input() final
+    {
+        // Trigger the callback function
+        callback_function(*object_ptr);
+
+        return HOVERED;
+    }
+
+
+private:
 
     std::string name;
     std::string button_color;
+
+    T* object_ptr;
+    std::function<void(T&)> callback_function;
+
 };

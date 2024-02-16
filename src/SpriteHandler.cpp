@@ -1,11 +1,12 @@
 #include "SpriteHandler.h"
-
-#include <iostream>
+#include "LSDLE.h"
 
 // Static Members
 
 std::unordered_map<const char*, SDL_Texture*> 
     SpriteHandler::sprite_paths_to_textures;
+
+TextureHandler* SpriteHandler::texture_handler {};
 
 // --------------------SPRITE--------------------------------------------------
 
@@ -16,18 +17,17 @@ Sprite::Sprite() {}
 
 // Constructors / Deconstructor
 
-SpriteHandler::SpriteHandler() {}
-
-SpriteHandler::SpriteHandler(TextureHandler* _texture_handler)
+SpriteHandler::SpriteHandler() 
 {
-    texture_handler = _texture_handler;
+    texture_handler = LSDLE::get_texture_handler();
 }
 
 
+#include <iostream>
 // Public
 
 void SpriteHandler::render_sprite(Sprite* s, int x, int y)
-{
+{   
     SpriteRenderDataContainer s_r_d_c{s, x, y};
 
     sprites_to_render.push(s_r_d_c);
@@ -37,28 +37,28 @@ void SpriteHandler::render()
 {
     while(!sprites_to_render.empty())
     {
-        SpriteRenderDataContainer s_container = sprites_to_render.front();
+        SpriteRenderDataContainer sprite_container = sprites_to_render.front();
         sprites_to_render.pop();
 
-        SDL_Rect dest = s_container.sprite->destination_data;
+        SDL_Rect dest = sprite_container.sprite->destination_data;
 
         // Alter the destination data to reflect the data in the data container
-        dest.x = s_container.x_pos;
-        dest.y = s_container.y_pos;
+        dest.x = sprite_container.x_pos;
+        dest.y = sprite_container.y_pos;
 
         // If the sprite should be enlarged with the size multiplier
-        if(s_container.sprite->is_enlarged)
+        if(sprite_container.sprite->is_enlarged)
         {
             // Enlarge the sprite with its new position
-            // dest.x *= sprite_size_multiplier;
-            // dest.y *= sprite_size_multiplier;
+            std::ceil(dest.x *= sprite_size_multiplier);
+            std::ceil(dest.y *= sprite_size_multiplier);
 
-            dest.w *= sprite_size_multiplier;
-            dest.h *= sprite_size_multiplier;
+            std::ceil(dest.w *= sprite_size_multiplier);
+            std::ceil(dest.h *= sprite_size_multiplier);
         }
 
-        texture_handler->draw(s_container.sprite->texture,
-            s_container.sprite->source_data, 
+        texture_handler->draw(sprite_container.sprite->texture,
+            sprite_container.sprite->source_data, 
             dest);
     }
 }

@@ -4,9 +4,10 @@
 #include <string>
 #include <vector>
 
-#include <ConsoleOutputHandler.h>
-#include <TextureHandler.h>
-#include <TextDisplayHandler.h>
+#include "ConsoleOutputHandler.h"
+#include "TextureHandler.h"
+#include "TextDisplayHandler.h"
+#include "SpriteHandler.h"
 
 
 class Window
@@ -43,6 +44,8 @@ public:
     void add_str_at_pixel_position(std::string str, uint16_t x, uint16_t y, 
         std::string color);
 
+    void add_sprite_at_cursor_pos(Sprite* s);
+
     const std::pair<uint16_t, uint16_t>& get_cursor_position();
 
 private:
@@ -54,9 +57,10 @@ private:
 
     uint16_t border_size = 10;
 
-    TextureHandler* texture_handler = nullptr;
-    TextDisplayHandler* text_display_handler = nullptr;
-    ConsoleOutputHandler* console_output_handler = nullptr;
+    TextureHandler* texture_handler {};
+    TextDisplayHandler* text_display_handler {};
+    SpriteHandler* sprite_handler {};
+    ConsoleOutputHandler* console_output_handler {};
 };
 
 class WindowManager

@@ -23,20 +23,15 @@ Menu::Menu(uint16_t start_x, uint16_t start_y, uint16_t end_x, uint16_t end_y,
 
 // Public
 
-// void Menu::set_instruction_queue(std::queue<InstructionSequence>*
-//     instruction_queue)    
-// {
-//     instruction_queue = instruction_queue;
-// }
 
 void Menu::start() {}
 
 void Menu::update() {}
 
-// void Menu::set_menu_handler(MenuHandler* _menu_handler)
-// {
-//     m_handler = _menu_handler;
-// }
+void Menu::deactivate_menu()
+{
+    MenuHandler::deactivate_menu(this);
+}
 
 void Menu::flag_activated() { activated = true; }
 

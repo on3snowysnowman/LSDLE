@@ -1,7 +1,6 @@
 #include "MenuTools.h"
 #include "LSDLE.h"
 
-#include <iostream>
 
 // Constructors / Deconstructor
 
@@ -20,6 +19,12 @@ MenuTools::MenuTools(Window* _window)
 void MenuTools::render_colored_number(uint16_t num, uint16_t lower_bound,
     uint16_t higher_bound, std::vector<std::string> colors)
 {   
+    if(num <= lower_bound)
+    {
+        window->add_str(std::to_string(num), colors.at(0));
+        return;
+    }
+
     if(num >= higher_bound)
     {
         window->add_str(std::to_string(num), *(--colors.end()));
@@ -93,6 +98,7 @@ void MenuTools::simulate_menu(MenuSimulationDataContainer& m_s_d_c)
     if(m_s_d_c.content.size() == 0) return;
 
     handle_menu_simulation_input(m_s_d_c);
+
     render_menu_simulation(m_s_d_c);
 }
 
@@ -253,11 +259,10 @@ void MenuTools::handle_menu_simulation_input(MenuSimulationDataContainer&
         // status of the item is HOVERED, deselect this item
         if(m_s_d_c.content.at(m_s_d_c.selected_pos)->handle_input() == 
             MenuToolItem::HOVERED)
-        {
+        {   
             m_s_d_c.selected_pos = -1;
-            return;
         }
-
+        return;
     }
 
     // No item is selected

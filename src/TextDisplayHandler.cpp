@@ -1,6 +1,6 @@
 #include <cmath>
 #include <fstream>
-#include <Debug.h>
+#include "Debug.h"
 
 #include "Json.h"
 #include "JsonLoader.h"
@@ -113,7 +113,7 @@ void TextDisplayHandler::render()
        
         // Get the SDL Rect for the destination data of this char
         SDL_Rect& destination_data = targ_char.destination;
-        
+
         // If this character is colored
         if(targ_char.colored)
         {
