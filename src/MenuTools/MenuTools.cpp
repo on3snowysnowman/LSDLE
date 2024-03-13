@@ -283,7 +283,7 @@ void MenuTools::handle_menu_simulation_input(MenuSimulationDataContainer&
 
                     else
                     {
-                        ItemType item_type = m_s_d_c.content.at(
+                        MenuToolItemType item_type = m_s_d_c.content.at(
                             m_s_d_c.cursor_pos)->get_item_type();
 
                         if(item_type == CHOICE || item_type == LIST || 

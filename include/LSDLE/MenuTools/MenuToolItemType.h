@@ -1,7 +1,7 @@
 #pragma once
 
 // The types of the MenuToolItems. This acts as their unique ID.
-enum ItemType
+enum MenuToolItemType
 {
     TEXT,
     VARIABLE,

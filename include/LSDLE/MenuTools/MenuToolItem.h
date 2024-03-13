@@ -44,7 +44,7 @@ public:
 
     MenuToolItem();
     MenuToolItem(Window* window, std::string _cursor_color, 
-        ItemType _item_type);
+        MenuToolItemType _item_type);
 
     
     /**
@@ -85,7 +85,7 @@ public:
     /**
      * @brief Returns the type of this item
      */
-    ItemType get_item_type() const;
+    MenuToolItemType get_item_type() const;
 
 protected:
 
@@ -110,7 +110,7 @@ protected:
      * Type of this Item. Default is TEXT but should change between derived
      * MenuToolItem classes
      */
-    ItemType item_type = TEXT;
+    MenuToolItemType item_type = TEXT;
 
     Window* window;
 };

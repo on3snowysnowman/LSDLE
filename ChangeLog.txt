@@ -4,6 +4,10 @@
    to assign a function instance to a MenuToolButton, for custom logic when a 
    button is pressed
 
+ - Changed the name of the name of the enum for different MenuToolItem types 
+   from "ItemType" to "MenuToolItemType". This should reduce the amount of 
+   naming collisions that might happen when using the LSDLE.
+
 
 # Version 1.1
 
