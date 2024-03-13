@@ -66,4 +66,5 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ DESTINATION "${TXT_CONTENT}/LSDLE
     PATTERN ".git" EXCLUDE
     PATTERN ".gitignore" EXCLUDE
     PATTERN ".vscode" EXCLUDE
-    PATTERN "clang-tidy" EXCLUDE)
+    PATTERN "clang-tidy" EXCLUDE
+    PATTERN "NeedToDocument.txt" EXCLUDE)
