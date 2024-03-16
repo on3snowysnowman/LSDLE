@@ -1,5 +1,13 @@
 # Version 1.2
 
+ CHANGES:
+ 
+ - Added a method to the Window and ConsoleOutputHandler class for getting
+   their height in characters
+
+ = Added a method to the Window and ConsoleOutputHandler class for 
+   converting a pixel position to the equivalent number of characters
+
  - Changed the functionality of the MenuToolButton,  which now allows the user
    to assign a function instance to a MenuToolButton, for custom logic when a 
    button is pressed
@@ -8,6 +16,12 @@
    from "ItemType" to "MenuToolItemType". This should reduce the amount of 
    naming collisions that might happen when using the LSDLE.
 
+ FIXES:
+
+  - Fixed bug where the ConsoleOutputHandler's anchor wouldn't reset to 0 when 
+    the reset_cursor_position method was called
+
+  - Fixed ConsoleOutputHandler not calculating screen_character_height
 
 # Version 1.1
 

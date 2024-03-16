@@ -126,6 +126,14 @@ void Window::add_sprite_at_cursor_pos(Sprite* s)
     border_size, cursor_pos_in_pixels.second + border_size);
 }
 
+uint16_t Window::get_window_height_in_characters() const noexcept
+{
+    return console_output_handler->get_character_height();
+}
+
+uint16_t Window::convert_pixels_to_characters(uint16_t pixels)
+{ return console_output_handler->convert_pixels_to_characters(pixels); }
+
 const std::pair<uint16_t, uint16_t>& Window::get_cursor_position() 
     { return console_output_handler->get_cursor_position(); }
 

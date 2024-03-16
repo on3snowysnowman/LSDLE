@@ -10,7 +10,7 @@
 #include "Window.h"
 
 /**
- * Version 1.1
+ * Version 1.2
  * 
  * LSDLE is a lightweight engine designed for rendering text and PNG images, as well as
  * handling basic user input. It includes various tools for creating simple menus with

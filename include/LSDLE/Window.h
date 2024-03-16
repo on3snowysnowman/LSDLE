@@ -46,6 +46,10 @@ public:
 
     void add_sprite_at_cursor_pos(Sprite* s);
 
+    uint16_t get_window_height_in_characters() const noexcept;
+
+    uint16_t convert_pixels_to_characters(uint16_t pixels);
+
     const std::pair<uint16_t, uint16_t>& get_cursor_position();
 
 private:

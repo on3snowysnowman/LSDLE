@@ -142,6 +142,14 @@ public:
      */
     void set_anchor(uint16_t _anchor);
 
+    /**
+     * Converts the passed value in pixels into the number of characters that 
+     * would fit that space
+    */
+    uint16_t convert_pixels_to_characters(uint16_t pixels);
+
+    uint16_t get_character_height() const noexcept;
+
     std::pair<uint16_t, uint16_t> get_cursor_position_in_pixels();
 
     /**

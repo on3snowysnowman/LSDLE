@@ -28,6 +28,9 @@ ConsoleOutputHandler::ConsoleOutputHandler(uint16_t _start_x, uint16_t _start_y,
     screen_character_width = (end_x - start_x)
         / font_width;
 
+    screen_character_height = (end_y - start_y)
+        / font_height;
+
     if(screen_character_width < 30)
     {
         Debug::log("ConsoleOutputHandler::ConsoleOutputHandler() : Screen "
@@ -115,6 +118,7 @@ void ConsoleOutputHandler::clear_buffer()
 void ConsoleOutputHandler::reset_cursor_position() 
 { 
     cursor_position = {0, 0};
+    anchor = 0;
 }
 
 void ConsoleOutputHandler::render()
@@ -124,9 +128,10 @@ void ConsoleOutputHandler::render()
     anchor = 0;
 }
 
+
 void ConsoleOutputHandler::set_anchor(uint16_t _anchor)
 {
-    if(anchor > screen_character_width)
+    if(_anchor > screen_character_width)
     {
         anchor = screen_character_width;
         return;
@@ -134,6 +139,14 @@ void ConsoleOutputHandler::set_anchor(uint16_t _anchor)
 
     anchor = _anchor;
 }
+
+uint16_t ConsoleOutputHandler::convert_pixels_to_characters(uint16_t pixels)
+{
+    return pixels / font_width;
+}
+
+uint16_t ConsoleOutputHandler::get_character_height() const noexcept
+{ return screen_character_height; }
 
 std::pair<uint16_t, uint16_t> ConsoleOutputHandler::
     get_cursor_position_in_pixels()

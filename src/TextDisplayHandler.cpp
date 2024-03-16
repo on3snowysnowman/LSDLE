@@ -88,8 +88,6 @@ void TextDisplayHandler::clear_buffer()
     }
 }
 
-#include <iostream>
-
 void TextDisplayHandler::render()
 {
 
