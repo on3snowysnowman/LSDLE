@@ -1,6 +1,8 @@
 # Version 1.2
 
  CHANGES:
+
+ - Began implementing a DelayedTextHandler.h
  
  - Added a method to the Window and ConsoleOutputHandler class for getting
    their height in characters

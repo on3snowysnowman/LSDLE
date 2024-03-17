@@ -29,7 +29,7 @@ ConsoleOutputHandler::ConsoleOutputHandler(uint16_t _start_x, uint16_t _start_y,
         / font_width;
 
     screen_character_height = (end_y - start_y)
-        / font_height;
+        / (font_height * VERTICAL_SPACE_MODIFIER);
 
     if(screen_character_width < 30)
     {
