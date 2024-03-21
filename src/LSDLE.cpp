@@ -10,6 +10,8 @@
 int LSDLE::screen_width = 0;
 int LSDLE::screen_height = 0;
 
+uint64_t LSDLE::total_elapsed_frames;
+
 InputHandler* LSDLE::input_handler = nullptr;
 TextureHandler* LSDLE::texture_handler = nullptr;
 
@@ -123,6 +125,8 @@ int LSDLE::get_screen_width() { return screen_width; }
 
 int LSDLE::get_screen_height() { return screen_height; }
 
+uint64_t LSDLE::get_total_elapsed_frames() { return total_elapsed_frames; }
+
 InputHandler* LSDLE::get_input_handler() { return input_handler; }
 
 TextureHandler* LSDLE::get_texture_handler() { return texture_handler; }
@@ -153,6 +157,8 @@ void LSDLE::simulation_loop()
 
     while(is_simulating)
     {
+        ++total_elapsed_frames;
+
         // Track when this frame started
         frame_start = SDL_GetTicks64();
 

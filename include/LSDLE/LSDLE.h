@@ -36,6 +36,8 @@ public:
     static int get_screen_width();
     static int get_screen_height();
 
+    static uint64_t get_total_elapsed_frames();
+
     static InputHandler* get_input_handler();
     static TextureHandler* get_texture_handler(); 
 
@@ -108,6 +110,9 @@ private:
 
     // Number of miliseconds that elapsed during this frame
     uint8_t elapsed_miliseconds;
+
+    // Number of frames that have elapsed since the start of the program
+    static uint64_t total_elapsed_frames;
 
     // Target number of miliseconds per frame to achieve 60 FPS
     const uint8_t TARG_MILISECONDS_PER_FRAME = 16;
