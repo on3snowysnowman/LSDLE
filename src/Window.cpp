@@ -3,8 +3,6 @@
 
 // Constructors / Deconstructor
 
-#include <iostream>
-
 Window::Window(uint16_t _start_x, uint16_t _start_y, uint16_t _end_x, 
     uint16_t _end_y) 
 {   

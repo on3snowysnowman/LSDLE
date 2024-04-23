@@ -4,7 +4,6 @@ project(LSDLE VERSION "1.0.2")
 # Create the static library
 add_library(LSDLE STATIC ${SOURCES}
     src/ConsoleOutputHandler.cpp
-    src/DelayedTextHandler.cpp
     src/EventSystem.cpp
     src/InputHandler.cpp
     src/LRandom.cpp
