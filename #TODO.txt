@@ -1,4 +1,6 @@
+Reconfigure how the LSDLE settings and colors are handled
 
 Rewrite how sprites work and render
 
 Configure a focus character for the ConsoleOutputHandler
+

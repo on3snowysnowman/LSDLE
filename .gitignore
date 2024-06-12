@@ -2,3 +2,7 @@
 build
 .vscode
 clang-tidy
+CMakeLists.txt
+LSDLE_Path.txt
+test.cpp
+*.exe
