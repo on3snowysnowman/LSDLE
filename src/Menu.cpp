@@ -6,6 +6,19 @@
 
 // Constructors / Deconstructors
 
+Menu::Menu(std::string _menu_id)
+{
+    menu_id = _menu_id;
+
+    window = new Window(0, 0, LSDLE::get_screen_width(), LSDLE::get_screen_height());
+
+    menu_tools = new MenuTools(window);
+
+    input_handler = LSDLE::get_input_handler();
+
+    MenuHandler::register_menu(this);
+}
+
 Menu::Menu(uint16_t start_x, uint16_t start_y, uint16_t end_x, uint16_t end_y,
     std::string _menu_id) 
 {

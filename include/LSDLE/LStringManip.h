@@ -1,34 +1,19 @@
 #pragma once
 
 #include <string>
+#include <stdexcept>
 
-namespace LStringManip
+#include "LNumericLimits.h"
+
+namespace LSDLELIB
 {
+    std::string get_str_after_char_from_end(std::string str, char c);
 
-    static std::string get_str_after_char(std::string str, char c)
-    {
-        int char_found_index = -1;
+    uint8_t string_to_uint8(const std::string& str);
 
-        for(int i = str.size() - 1; i >= 0; --i)
-        {
-            if(str.at(i) == c)
-            {
-                char_found_index = i;
-                goto FOUND_CHAR_INDEX;
-            }
-        }
+    uint16_t string_to_uint16(const std::string& str);
 
-        // Did not find the index of the char being searched for, simply return
-        // the string
+    int string_to_int32(const std::string& str);
 
-        return str;
-
-        // The char has been found, so trim the string so it starts one after
-        // the position the char was found
-        FOUND_CHAR_INDEX:
-
-        str = str.substr(++char_found_index);
-
-        return str;
-    }
+    uint64_t string_to_uint64(const std::string& str);
 };

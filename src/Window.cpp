@@ -37,6 +37,8 @@ void Window::resize_window(uint16_t _start_x, uint16_t _start_y,
     start_y = _start_y;
     end_x = _end_x;
     end_y = _end_y;
+
+    console_output_handler->resize_dimensions(start_x, start_y, end_x, end_y);
 }
 
 void Window::reset_cursor_position() 

@@ -4,7 +4,6 @@
 
 #include "ConsoleOutputHandler.h"
 #include "../InputHandler.h"
-#include "SimulationDataContainers.h"
 #include "MenuToolItemType.h"
 #include "Window.h"
 
@@ -46,7 +45,11 @@ public:
     MenuToolItem(Window* window, std::string _cursor_color, 
         MenuToolItemType _item_type);
 
-    
+    // Called once when this item is selected
+    virtual void start();
+
+    virtual void reset();
+
     /**
      * @brief Render the Item with the understanding that it has no status
      * (it is not hovered or selected)

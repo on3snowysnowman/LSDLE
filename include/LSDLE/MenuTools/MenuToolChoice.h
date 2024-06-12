@@ -4,6 +4,7 @@
 #include "../ConsoleOutputHandler.h"
 #include "../InputHandler.h"
 #include "Window.h"
+#include "ColorString.h"
 
 
 /**

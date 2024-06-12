@@ -5,6 +5,7 @@
 #include <nlohmann/json.hpp>
 
 #include "Debug.h"
+#include "FileSystemHandler.h"
 #include "Json.h"
 
 /**
@@ -25,7 +26,7 @@ public:
     {
 
         // Check if the directory is valid
-        if(!Debug::does_directory_exist(path))
+        if(!FileSystemHandler::does_directory_exist(path))
         {
             std::string message = "JsonLoader.get(const char* "
                 "path) where 'path' = " + std::string(path) + " -> Could not "
@@ -78,7 +79,7 @@ public:
     static void clear(const char* path)
     {
         // Check if the directory is valid
-        if(!Debug::does_directory_exist(path))
+        if(!FileSystemHandler::does_directory_exist(path))
         {
             std::string message = "JsonLoader.clear(const char* path) where "
                 "'path' = " + std::string(path) + " -> Could not open file.";

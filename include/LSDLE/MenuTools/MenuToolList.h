@@ -28,6 +28,8 @@ public:
         std::string _name, uint16_t _cursor_pos = 0, 
         int32_t _selected_pos = -1);
 
+    void reset() final;
+
     /**
      * @brief Render the List with the understanding that it has no status
      * (it is not hovered or selected)

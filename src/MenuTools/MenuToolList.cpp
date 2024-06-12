@@ -1,7 +1,5 @@
 #include "MenuToolList.h"
 
-#include <iostream>
-
 
 // Constructors / Deconstructor
 
@@ -18,6 +16,16 @@ MenuToolList::MenuToolList(Window* _window, std::string _cursor_color,
 
 
 // Public
+
+void MenuToolList::reset()
+{
+    cursor_pos = 0;
+
+    for(MenuToolItem* item : content)
+    {
+        item->reset();
+    }
+}
 
 void MenuToolList::render_no_status() const
 {

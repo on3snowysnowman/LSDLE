@@ -59,10 +59,10 @@ public:
      * monitored by the user outside of the function. See 
      * "documentation/MenuTools.txt" for an in depth explanation.
      * 
-     * @param m_s_d_c 
+     * @param msdc 
      */
     void simulate_menu(
-        MenuSimulationDataContainer& m_s_d_c);
+        MenuSimulationDataContainer& msdc);
 
 
 private:
@@ -90,7 +90,7 @@ private:
      * This function is split from the original menu simulation call simply
      * for the sake of readability.
      */
-    void render_menu_simulation(MenuSimulationDataContainer& m_s_d_c);
+    void render_menu_simulation(MenuSimulationDataContainer& msdc);
 
     /**
      * @brief The input handling function for the menu simulation process.
@@ -98,7 +98,7 @@ private:
      * This function is split from the original menu simulation call simply
      * for the sake of readability.
      */
-    void handle_menu_simulation_input(MenuSimulationDataContainer& m_s_d_c);
+    void handle_menu_simulation_input(MenuSimulationDataContainer& msdc);
 
     void render_meter(uint16_t num, uint16_t maximum, uint8_t num_ticks, 
         std::string color);

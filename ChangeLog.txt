@@ -2,7 +2,16 @@
 
  CHANGES:
 
- - Began implementing a DelayedTextHandler.h
+ - Added a function to the ListSelectionDataContainer to quickly get the 
+   selected item
+
+ - Added a constructor to the Menu class to automatically create with the 
+   window size of the full screen. This can remove the tediousness of having
+   to specify the dimension of every menu, even if all of them are the same, 
+   fitting the whole screen.
+
+ - Added ModularComponents. Read documentation/ModularComponents.txt for more
+   information
  
  - Added a method to the Window and ConsoleOutputHandler class for getting
    their height in characters

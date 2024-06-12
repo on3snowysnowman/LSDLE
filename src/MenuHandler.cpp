@@ -12,21 +12,6 @@ std::unordered_map<std::string, Menu*> MenuHandler::registered_menus;
 void MenuHandler::update()
 {
     if(active_menus.size() > 0) active_menus.front()->update();
-
-    // for(Menu* m : active_menus)
-    // {
-    //     m->update();
-    // }
-
-
-
-    // while(!instruction_queue.empty())
-    // {
-    //     InstructionSequence& i = instruction_queue.front();
-    //     instruction_queue.pop();
-
-    //     process_instruction(i);
-    // }
 }
 
 #include <iostream>

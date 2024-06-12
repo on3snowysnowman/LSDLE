@@ -1,6 +1,6 @@
 #include "Debug.h"
 #include "MenuToolVariable.h"
-#include "LNumericLimits.h"
+#include "LStringManip.h"
 
 #include <iostream>
 
@@ -54,7 +54,7 @@ MenuToolVariable::MenuToolVariable(Window* _window,
                         "decimal points";
 
                     Debug::log(message, Debug::ERR);
-                    exit(0);
+                    exit(1);
                 }
             }
 
@@ -144,6 +144,16 @@ MenuToolVariable::MenuToolVariable(Window* _window,
 
 // Public
 
+void MenuToolVariable::start() 
+{
+    remove_first_zeros();
+}
+
+void MenuToolVariable::reset()
+{
+    content.clear();
+}
+
 void MenuToolVariable::render_no_status() const
 {
     uint16_t initial_c_o_cursor_x_pos = 
@@ -203,26 +213,41 @@ MenuToolItem::Status MenuToolVariable::handle_input()
 
 uint16_t MenuToolVariable::fetch_int()
 {
-    uint16_t num {};
-
-    // Attempt to convert the content to an int
-    try
-    {
-        num = std::stoi(content);
-        return num;
-    }
-
-    // Numeric interpretation of the string was too large
-    catch(std::out_of_range)
-    {
-        Debug::log("MenuToolVariable.fetch_int() : Attempted conversion of "
-            "content caused an overflow error", Debug::WARN);
-
-        return LNumericLimits::UINT16_LIMIT;
-    }
+    return LSDLELIB::string_to_uint16(content);
 }
 
 // Private
+
+void MenuToolVariable::remove_first_zeros()
+{
+    // This function is explicitly for removing preceeding 0s from floats and 
+    // ints, so strings don't need to be touched
+    if(str_type == STRING) return;
+
+    // Iterate through the string, deleting each 0 until non 0 character is 
+    // found
+    for(std::string::iterator it = content.begin(); it != content.end();
+        ++it)
+    {
+        switch(*it)
+        {
+            case '0':
+
+                content.erase(it);
+                --it;
+                break;
+
+            case '.':
+
+                content.insert(content.begin(), '0');
+                return;
+
+            default:
+
+                return;
+        }
+    }
+}
 
 MenuToolItem::Status MenuToolVariable::handle_float_input()
 {
@@ -238,6 +263,8 @@ MenuToolItem::Status MenuToolVariable::handle_float_input()
                 // If the Float is left empty, emplace a 0 so it still contains 
                 // a value
                 if(content.size() == 0) content.push_back('0');
+
+                else remove_first_zeros();
 
                 input_handler->block_key_until_released(SDLK_RETURN);
                 return HOVERED;
@@ -296,6 +323,8 @@ MenuToolItem::Status MenuToolVariable::handle_int_input()
         switch(key)
         {
             case SDLK_RETURN:
+
+                remove_first_zeros();
 
                 if(content.size() == 0) content.push_back('0');
 

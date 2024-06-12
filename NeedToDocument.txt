@@ -1,4 +1,6 @@
 
 
- - Window
+ - Window.h, Window.cpp
+ - ModularComponents / *.h, *.cpp
+ - LStringManip.h
  

@@ -20,6 +20,12 @@ MenuToolTextList::MenuToolTextList(Window* _window, std::string _cursor_color, s
 
 // Public
 
+
+void MenuToolTextList::reset()
+{
+    cursor_pos = 0;
+}
+
 void MenuToolTextList::render_no_status() const
 {
     uint16_t initial_c_o_cursor_x_pos = 

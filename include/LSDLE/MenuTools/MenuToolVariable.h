@@ -29,6 +29,10 @@ public:
         std::string _cursor_color, std::string _name,
         std::string _content = "");
 
+    void start() final;
+
+    void reset() final;
+
     /**
      * @brief Render the Variable with the understanding that it has no status
      * (it is not hovered or selected)
@@ -67,6 +71,8 @@ private:
 
     using input_handling_function = 
         MenuToolItem::Status (MenuToolVariable::*)();
+
+    void remove_first_zeros();
 
     /**
      * @brief Specific function for handling input from the user if the 

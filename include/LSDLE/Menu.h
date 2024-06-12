@@ -4,7 +4,7 @@
 #include <queue>
 #include <cstdint>
 
-#include "InstructionSequence.h"
+// #include "InstructionSequence.h"
 #include "Window.h"
 #include "MenuTools.h"
 #include "InputHandler.h"
@@ -28,6 +28,8 @@ class Menu
 {
 
 public:
+
+    Menu(std::string menu_id);    
 
     Menu(uint16_t start_x, uint16_t start_y, uint16_t end_x, uint16_t end_y,
         std::string menu_id);

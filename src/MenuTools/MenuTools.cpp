@@ -92,14 +92,14 @@ void MenuTools::simulate_list_selection(
     render_list_selection(l_s_d_c);
 }
 
-void MenuTools::simulate_menu(MenuSimulationDataContainer& m_s_d_c)
+void MenuTools::simulate_menu(MenuSimulationDataContainer& msdc)
 {
     // There are no MenuToolItems to handle
-    if(m_s_d_c.content.size() == 0) return;
+    if(msdc.content.size() == 0) return;
 
-    handle_menu_simulation_input(m_s_d_c);
+    handle_menu_simulation_input(msdc);
 
-    render_menu_simulation(m_s_d_c);
+    render_menu_simulation(msdc);
 }
 
 
@@ -202,27 +202,28 @@ void MenuTools::handle_list_selection_input(ListSelectionDataContainer&
 }
 
 void MenuTools::render_menu_simulation(MenuSimulationDataContainer& 
-    m_s_d_c)
+    msdc)
 {
     // There is an item selected
-    if(m_s_d_c.selected_pos > -1)
+    if(msdc.selected_pos > -1)
     {   
+
         // Iterate through the MenuToolItems before the selected item
-        for(int i = 0; i < m_s_d_c.selected_pos; ++i)
+        for(int i = 0; i < msdc.selected_pos; ++i)
         {
             // Render the item with a no status render
-            m_s_d_c.content.at(i)->render_no_status();
+            msdc.content.at(i)->render_no_status();
         }
 
         // Render the selected item with a selected render
-        m_s_d_c.content.at(m_s_d_c.selected_pos)->render_selected();
+        msdc.content.at(msdc.selected_pos)->render_selected();
 
         // Iterate through the MenuToolItems after the selected item
-        for(int i = m_s_d_c.selected_pos + 1; i < m_s_d_c.content.size(); 
+        for(int i = msdc.selected_pos + 1; i < msdc.content.size(); 
             ++i)
         {
             // Render the item with a no status render
-            m_s_d_c.content.at(i)->render_no_status();
+            msdc.content.at(i)->render_no_status();
         }
     }
 
@@ -230,37 +231,37 @@ void MenuTools::render_menu_simulation(MenuSimulationDataContainer&
     else
     {
         // Iterate through the MenuToolItems before the hovered item
-        for(int i = 0; i < m_s_d_c.cursor_pos; ++i)
+        for(int i = 0; i < msdc.cursor_pos; ++i)
         {  
             // Render the item with a no status render
-            m_s_d_c.content.at(i)->render_no_status();
+            msdc.content.at(i)->render_no_status();
         }
 
         // Render the hovered item with a hovered render
-        m_s_d_c.content.at(m_s_d_c.cursor_pos)->render_hovered();
+        msdc.content.at(msdc.cursor_pos)->render_hovered();
 
         // Iterate through the MenuToolItems after the hovered item
-        for(int i = m_s_d_c.cursor_pos + 1; i < m_s_d_c.content.size(); 
+        for(int i = msdc.cursor_pos + 1; i < msdc.content.size(); 
             ++i)
         {
             // Render the item with a no status render
-            m_s_d_c.content.at(i)->render_no_status();
+            msdc.content.at(i)->render_no_status();
         }
     }
 }
 
 void MenuTools::handle_menu_simulation_input(MenuSimulationDataContainer&
-    m_s_d_c) 
+    msdc) 
 {   
     // There is an item selected
-    if(m_s_d_c.selected_pos > -1)
+    if(msdc.selected_pos > -1)
     {   
         // Signal the selected item to handle the user's input. If the return 
         // status of the item is HOVERED, deselect this item
-        if(m_s_d_c.content.at(m_s_d_c.selected_pos)->handle_input() == 
+        if(msdc.content.at(msdc.selected_pos)->handle_input() == 
             MenuToolItem::HOVERED)
         {   
-            m_s_d_c.selected_pos = -1;
+            msdc.selected_pos = -1;
         }
         return;
     }
@@ -271,6 +272,10 @@ void MenuTools::handle_menu_simulation_input(MenuSimulationDataContainer&
         std::vector<uint32_t> keys = input_handler->
             get_all_pressed_and_available_keys();
 
+        // Used to identify the type of the item that is selected, defined here 
+        // to prevent jumping the case label later
+        MenuToolItemType item_type;
+
         for(uint32_t key : keys)
         {
             switch(key)
@@ -278,23 +283,33 @@ void MenuTools::handle_menu_simulation_input(MenuSimulationDataContainer&
                 // Select an item
                 case SDLK_RETURN:
 
-                    if(m_s_d_c.block_enter_key) 
-                        input_handler->block_key_until_released(SDLK_RETURN);
+                    // if(msdc.block_enter_key) 
+                    //     input_handler->block_key_until_released(SDLK_RETURN);
 
-                    else
-                    {
-                        MenuToolItemType item_type = m_s_d_c.content.at(
-                            m_s_d_c.cursor_pos)->get_item_type();
+                    // else
+                    // {
+                    //     MenuToolItemType item_type = msdc.content.at(
+                    //         msdc.cursor_pos)->get_item_type();
 
-                        if(item_type == CHOICE || item_type == LIST || 
-                            item_type == TEXT_LIST)
-                            input_handler->block_key_until_released
-                            (SDLK_RETURN);
-                    }
+                    //     if(item_type == CHOICE || item_type == LIST || 
+                    //         item_type == TEXT_LIST)
+                    //         input_handler->block_key_until_released
+                    //         (SDLK_RETURN);
+                    // }
 
-                    m_s_d_c.selected_pos = m_s_d_c.cursor_pos;
+                    item_type = msdc.content.at(
+                            msdc.cursor_pos)->get_item_type();
 
-                    return;;
+                    if(item_type == CHOICE || item_type == LIST || 
+                        item_type == TEXT_LIST)
+                        input_handler->block_key_until_released
+                        (SDLK_RETURN);
+
+                    msdc.selected_pos = msdc.cursor_pos;
+
+                    msdc.content.at(msdc.selected_pos)->start();
+
+                    return;
                 
                 // Move the cursor down
                 case SDLK_w:
@@ -306,7 +321,7 @@ void MenuTools::handle_menu_simulation_input(MenuSimulationDataContainer&
                         input_handler->is_key_pressed(SDLK_RSHIFT))
                     {
                         // Jump to the beginning of the list
-                        m_s_d_c.cursor_pos = 0;
+                        msdc.cursor_pos = 0;
                         return;
                     }
 
@@ -315,14 +330,14 @@ void MenuTools::handle_menu_simulation_input(MenuSimulationDataContainer&
                     // position
 
                     // If the cursor is not at the very bottom of the list
-                    if(m_s_d_c.cursor_pos > 0)
+                    if(msdc.cursor_pos > 0)
                     {
                         // Move the cursor up a position
-                        --m_s_d_c.cursor_pos;
+                        --msdc.cursor_pos;
                         return;
                     }
                     
-                    return;;
+                    return;
 
                 // Move the cursor up
                 case SDLK_s:
@@ -334,7 +349,7 @@ void MenuTools::handle_menu_simulation_input(MenuSimulationDataContainer&
                         input_handler->is_key_pressed(SDLK_RSHIFT))
                     {
                         // Jump to the end of the list 
-                        m_s_d_c.cursor_pos = m_s_d_c.content.size() - 1;
+                        msdc.cursor_pos = msdc.content.size() - 1;
                         return;
                     }
 
@@ -343,10 +358,10 @@ void MenuTools::handle_menu_simulation_input(MenuSimulationDataContainer&
                     // single position
 
                     // If the cursor is not at the very end of the list
-                    if(m_s_d_c.cursor_pos < m_s_d_c.content.size() - 1)
+                    if(msdc.cursor_pos < msdc.content.size() - 1)
                     {
                         // Move the cursor down a position
-                        ++m_s_d_c.cursor_pos;
+                        ++msdc.cursor_pos;
                         return;
                     }
 
@@ -361,6 +376,12 @@ void MenuTools::render_meter(uint16_t num, uint16_t maximum, uint8_t num_ticks,
     std::string color)
 {
     window->add_str(std::to_string(num) + " [");
+
+    if(maximum == 0)
+    {
+        window->add_str("          ] " + std::to_string(maximum));
+        return;
+    }
 
     for(uint8_t i = 0; i < num_ticks; ++i)
     {

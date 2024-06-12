@@ -8,7 +8,7 @@
 
 
 /**
- * @brief Handles code output to a text file. 
+ * @brief Handles program output to a text file. 
  * 
  * Can be used for debugging, or general info output from the program. 
  * Should be cleared using the 'clear_debug_output_file' per each execution 
@@ -102,16 +102,6 @@ public:
     static void change_output_directory(const char* new_path)
     {
         output_file_path = new_path;
-    }
-
-    /**
-     * Returns true if the 'path' parameter is a valid directory
-     * 
-     * @param path Target Directory
-    */
-    static bool does_directory_exist(const char* path)
-    {
-        return std::filesystem::exists(path);
     }
 
     template<typename T> 

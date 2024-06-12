@@ -57,6 +57,13 @@ void SpriteHandler::render()
             std::ceil(dest.h *= sprite_size_multiplier);
         }
 
+        // std::cout << "Drawing Sprite : (" << sprite_container.sprite->source_data.x << 
+        //     ", " << sprite_container.sprite->source_data.y << ", " << sprite_container.sprite->source_data.w
+        //     << ", " << sprite_container.sprite->source_data.h << ") - (" << dest.x << ", " << dest.y
+        //     << ", " << dest.w << ", " << dest.h << ")\n";
+
+        // exit(0);
+
         texture_handler->draw(sprite_container.sprite->texture,
             sprite_container.sprite->source_data, 
             dest);

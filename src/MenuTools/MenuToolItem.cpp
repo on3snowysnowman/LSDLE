@@ -52,6 +52,10 @@ MenuToolItem::MenuToolItem(Window* _window, std::string _cursor_color,
 
 // Public
 
+void MenuToolItem::start() {}
+
+void MenuToolItem::reset() {}
+
 void MenuToolItem::render_no_status() const {}
 
 void MenuToolItem::render_hovered() const {}

@@ -3,10 +3,10 @@
 #include <string>
 #include <cstdint>
 #include <vector>
+#include <initializer_list>
 
 #include "../ColorString.h"
-
-class MenuToolItem;
+#include "MenuToolItem.h"
 
 /**
  * @brief The ListSelectionDataContainer is purely a storage struct. It contains
@@ -43,6 +43,17 @@ struct ListSelectionDataContainer
 
     // The choices of the List Selection Menu
     std::vector<ColorString> content;
+
+    void reset()
+    {
+        cursor_pos = 0;
+        item_has_been_selected = false;
+    }
+
+    const std::string& get_selected_item() const
+    {
+        return content.at(cursor_pos).content;
+    }
 };
 
 
@@ -69,6 +80,28 @@ struct MenuSimulationDataContainer
         cursor_pos = _cursor_pos;
         selected_pos = _selected_position;
         block_enter_key = _block_enter_key;
+    }
+
+    void reset()
+    {
+        cursor_pos = 0;
+        selected_pos = -1;
+    }
+
+    void reset_contents()
+    {
+        for(MenuToolItem* item : content)
+        {
+            item->reset();
+        }
+    }
+
+    void fill_content(std::initializer_list<MenuToolItem*> menu_items)
+    {
+        for(MenuToolItem* item : menu_items)
+        {
+            content.push_back(item);
+        }
     }
 
     // If the enter key will be blocked until released on button presses

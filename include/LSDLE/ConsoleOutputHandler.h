@@ -34,6 +34,9 @@ public:
     ConsoleOutputHandler(uint16_t _start_x, uint16_t _start_y, 
         uint16_t _end_x, uint16_t _end_y);
 
+    void resize_dimensions(uint16_t start_x, uint16_t start_y, 
+        uint16_t end_x, uint16_t end_y);
+
     /**
      * @brief Moves the cursor to a position on the screen.
      * 

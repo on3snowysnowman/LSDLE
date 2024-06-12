@@ -3,6 +3,7 @@
 
 #include "TextureHandler.h"
 #include "Debug.h"
+#include "FileSystemHandler.h"
 #include "Json.h"
 #include "JsonLoader.h"
 
@@ -34,10 +35,19 @@ TextureHandler::TextureHandler(SDL_Renderer* _renderer, std::string _color_data_
 void TextureHandler::draw(SDL_Texture* texture, SDL_Rect& source, 
     SDL_Rect& dest) const
 {
-    draw_with_color(texture, source, dest, "White");
+    // std::cout << "Drawing texture\n";
+
+    // std::cout << source.x << '\n' << source.y << '\n' << source.w
+    //     << '\n' << source.h << '\n' << dest.x << '\n' << dest.y << '\n'
+    //     << dest.w << '\n' << dest.h << '\n';
+
+    // exit(0);
+
+    // draw_with_color(texture, source, dest, "White");
 
     // Draw to the screen
-    // SDL_RenderCopy(renderer, texture, &source, &dest);
+
+    SDL_RenderCopy(renderer, texture, &source, &dest);
 }
 
 void TextureHandler::draw_with_color(SDL_Texture* texture, SDL_Rect& source,
@@ -80,7 +90,7 @@ const std::unordered_map<std::string, Color>* TextureHandler::get_colors()
 SDL_Texture* TextureHandler::create_texture(const char* path) const
 {
     // Path file doesn't exist
-    if(!Debug::does_directory_exist(path))
+    if(!FileSystemHandler::does_directory_exist(path))
     {
         std::string message = 
             "TextureHandler.create_texture(const char* path) where 'path' = "

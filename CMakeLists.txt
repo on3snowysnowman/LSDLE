@@ -5,9 +5,12 @@ project(LSDLE VERSION "1.0.2")
 add_library(LSDLE STATIC ${SOURCES}
     src/ConsoleOutputHandler.cpp
     src/EventSystem.cpp
+    src/FileSystemHandler.cpp
     src/InputHandler.cpp
+    src/LMath.cpp
     src/LRandom.cpp
     src/LSDLE.cpp
+    src/LStringManip.cpp
     src/Menu.cpp
     src/MenuHandler.cpp
     src/SpriteHandler.cpp
@@ -22,6 +25,10 @@ add_library(LSDLE STATIC ${SOURCES}
     src/MenuTools/MenuToolTextList.cpp
     src/MenuTools/MenuToolText.cpp
     src/MenuTools/MenuToolVariable.cpp
+
+    src/ModularComponents/BaseComponent.cpp
+    src/ModularComponents/TextComponent.cpp
+    src/ModularComponents/VariableComponent.cpp
 )
 
 target_include_directories(LSDLE
@@ -31,6 +38,9 @@ target_include_directories(LSDLE
 
         $<INSTALL_INTERFACE:include/LSDLE/MenuTools>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/LSDLE/MenuTools>
+
+        $<INSTALL_INTERFACE:include/LSDLE/ModularComponents>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/LSDLE/ModularComponents>
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
@@ -47,8 +57,6 @@ target_link_libraries(LSDLE
         SDL2_image
         SDL2_mixer
 )
-
-# set(TXT_CONTENT)
 
 file(STRINGS "LSDLE_Path.txt" TXT_CONTENT LIMIT_COUNT 1)
 
@@ -67,4 +75,7 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ DESTINATION "${TXT_CONTENT}/LSDLE
     PATTERN ".gitignore" EXCLUDE
     PATTERN ".vscode" EXCLUDE
     PATTERN "clang-tidy" EXCLUDE
-    PATTERN "NeedToDocument.txt" EXCLUDE)
+    PATTERN "NeedToDocument.txt" EXCLUDE
+    PATTERN "old_files" EXCLUDE
+    PATTERN "*.exe" EXCLUDE
+    PATTERN "*.txt" EXCLUDE)

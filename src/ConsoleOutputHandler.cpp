@@ -15,6 +15,16 @@ ConsoleOutputHandler::ConsoleOutputHandler(uint16_t _start_x, uint16_t _start_y,
     uint16_t _end_x, uint16_t _end_y)
 {
     text_display_handler = TextDisplayHandler();
+    
+    resize_dimensions(_start_x, _start_y, _end_x, _end_y);
+}
+
+
+// Public
+
+void ConsoleOutputHandler::resize_dimensions(uint16_t _start_x, uint16_t _start_y,
+    uint16_t _end_x, uint16_t _end_y)
+{
     start_x = _start_x;
     start_y = _start_y;
     end_x = _end_x;
@@ -31,16 +41,13 @@ ConsoleOutputHandler::ConsoleOutputHandler(uint16_t _start_x, uint16_t _start_y,
     screen_character_height = (end_y - start_y)
         / (font_height * VERTICAL_SPACE_MODIFIER);
 
-    if(screen_character_width < 30)
-    {
-        Debug::log("ConsoleOutputHandler::ConsoleOutputHandler() : Screen "
-        "character width too small (< 30)", Debug::ERR);
-        exit(0);
-    }
+    // if(screen_character_width < 30)
+    // {
+    //     Debug::log("ConsoleOutputHandler::ConsoleOutputHandler() : Screen "
+    //     "character width too small (< 30)", Debug::ERR);
+    //     exit(0);
+    // }
 }
-
-
-// Public
 
 void ConsoleOutputHandler::move_cursor(uint16_t x, uint16_t y)
 {
