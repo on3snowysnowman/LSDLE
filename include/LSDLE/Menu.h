@@ -33,15 +33,6 @@ public:
 
     Menu(uint16_t start_x, uint16_t start_y, uint16_t end_x, uint16_t end_y,
         std::string menu_id);
-    
-    // /**
-    //  * @brief Sets the instruction queue of this Menu.
-    //  * 
-    //  * 
-    //  * @param _instruction_queue 
-    //  */
-    // void set_instruction_queue(std::queue<InstructionSequence>* 
-    //     _instruction_queue);
 
     /**
      * @brief Called when the Menu is activated.
@@ -95,19 +86,9 @@ protected:
     // Unique string identifier
     std::string menu_id = "BaseMenu";
 
+    Window* window {};
 
-    // /**
-    //  * The instruction_queue points to the instruction queue object in the 
-    //  * MenuHandler class. Menus will place InstructionSequences inside this 
-    //  * queue, and the MenuHandler will read and process them each frame. This 
-    //  * is how the Menus are able to communicate with the MenuHandler without
-    //  * needed to include the MenuHandler, causing circular imports.
-    //  */
-    // std::queue<InstructionSequence>* instruction_queue;
+    MenuTools* menu_tools {};
 
-    Window* window;
-
-    MenuTools* menu_tools;
-
-    InputHandler* input_handler;
+    InputHandler* input_handler {};
 };

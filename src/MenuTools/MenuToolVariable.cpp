@@ -2,8 +2,6 @@
 #include "MenuToolVariable.h"
 #include "LStringManip.h"
 
-#include <iostream>
-
 
 // Constructors / Deconstructor
 
@@ -11,134 +9,15 @@ MenuToolVariable::MenuToolVariable() {}
 
 MenuToolVariable::MenuToolVariable(Window* _window, 
     MenuToolItem::StringType _str_type, std::string _cursor_color, 
-    std::string _name, std::string _content) : 
-    MenuToolItem(_window, _cursor_color,
-    VARIABLE)
+    std::string _name, std::string _content, std::string _default_content) : 
+    MenuToolItem(_window, _cursor_color, VARIABLE)
 {
     str_type = _str_type;
     name = _name;
     content = _content;
+    default_content = _default_content;
 
-    // If the type of this Variable is a float
-    if(str_type == StringType::FLOAT)
-    {
-        // Set the input handling function to the FLOAT one
-        targ_input_handling_function = &MenuToolVariable::handle_float_input;
-
-        if(content.size() == 0) 
-        {
-            content.push_back('0');
-            return;
-        }
-
-        // Validate the content parameter by checking if it is filled with only
-        // numbers, and there is at most 1 decimal point.
-
-        // Iterate through each char
-        for(char c : content)
-        {
-            // If the char is a decimal point
-            if(c == '.')
-            {
-                // If a decimal point has already been found in the content
-                if(has_decimal_point)
-                {
-                    // Throw an error, since there can't be a float with two 
-                    // decimal points
-                    std::string message = "MenuToolVariable.MenuToolVariable"
-                        "(ConsoleOutputHandler* _window, "
-                        "InputHandler* _input_handler, MenuToolItem::"
-                        "StringType _str_type, std::string _cursor_color, "
-                        "std::string _name, std::string _content) -> Attempted"
-                        " to create a Variable of Float type with two "
-                        "decimal points";
-
-                    Debug::log(message, Debug::ERR);
-                    exit(1);
-                }
-            }
-
-            // If the char is not a number
-            else if(c < 48 || c > 57)
-            {
-                // Throw an error, since there can't be a float with letters
-                std::string message = "MenuToolVariable.MenuToolVariable"
-                    "(ConsoleOutputHandler* _window, "
-                    "InputHandler* _input_handler, MenuToolItem::"
-                    "StringType _str_type, std::string _cursor_color, "
-                    "std::string _name, std::string _content) -> Attempted"
-                    " to create a Variable of Float type with alphabetical "
-                    "characters.";
-
-                Debug::log(message, Debug::ERR);
-                exit(0);
-            }
-        }
-    }
-
-    // If the type of the Variable is an int
-    else if(str_type == StringType::INT)
-    {
-        // Set the input handling function to the INT one.
-        targ_input_handling_function = &MenuToolVariable::handle_int_input;
-
-        if(content.size() == 0)
-        {
-            content.push_back('0');
-            
-            return;
-        }
-
-        // Validate the content parameter by checking if it is filled with only
-        // numbers.
-
-        // Iterate through each char
-        for(char c : content)
-        {
-            if(c == '.')
-            {
-                // Throw an error, since an int can't have a decimal point
-                std::string message = "MenuToolVariable.MenuToolVariable"
-                    "(ConsoleOutputHandler* _window, "
-                    "InputHandler* _input_handler, MenuToolItem::"
-                    "StringType _str_type, std::string _cursor_color, "
-                    "std::string _name, std::string _content) -> Attempted"
-                    " to create a Variable of Int type with a decimal "
-                    "point";
-                
-                Debug::log(message, Debug::ERR);
-                exit(0);
-            }
-
-            // If the char is not a number
-            else if(c < 48 || c > 57)
-            {
-                // Throw an error, since there can't be a float with letters
-                std::string message = "MenuToolVariable.MenuToolVariable"
-                    "(ConsoleOutputHandler* _window, "
-                    "InputHandler* _input_handler, MenuToolItem::"
-                    "StringType _str_type, std::string _cursor_color, "
-                    "std::string _name, std::string _content) -> Attempted"
-                    " to create a Variable of Int type with alphabetical "
-                    "characters.";
-
-                Debug::log(message, Debug::ERR);
-                exit(0);
-            }
-        }
-    }
-
-    // The type of the Variable is a string
-
-    // No validation needs to be done to the content parameter, since all
-    // characters are valid for a STRING type Variable.
-
-    else
-    {
-        // Set the input handling function to the STRING one.
-        targ_input_handling_function = &MenuToolVariable::handle_string_input;
-    }
-
+    handle_init_string_type();
 }
 
 
@@ -151,7 +30,7 @@ void MenuToolVariable::start()
 
 void MenuToolVariable::reset()
 {
-    content.clear();
+    content = default_content;
 }
 
 void MenuToolVariable::render_no_status() const
@@ -211,15 +90,145 @@ MenuToolItem::Status MenuToolVariable::handle_input()
     // return (this->*targ_input_handling_function)();
 }
 
-uint16_t MenuToolVariable::fetch_int()
+uint16_t MenuToolVariable::fetch_uint16()
 {
     return LSDLELIB::string_to_uint16(content);
 }
 
 // Private
 
+void MenuToolVariable::handle_init_string_type()
+{
+    // If the type of this Variable is a float
+    if(str_type == StringType::FLOAT)
+    {
+        if(default_content.size() == 0) default_content.push_back('0');
+
+        // Set the input handling function to the FLOAT one
+        targ_input_handling_function = &MenuToolVariable::handle_float_input;
+
+        if(content.size() == 0) 
+        {
+            content = default_content;
+            return;
+        }
+
+        // Validate the content parameter by checking if it is filled with only
+        // numbers, and there is at most 1 decimal point.
+
+        // Iterate through each char
+        for(char c : content)
+        {
+            // If the char is a decimal point
+            if(c == '.')
+            {
+                // If a decimal point has already been found in the content
+                if(has_decimal_point)
+                {
+                    // Throw an error, since there can't be a float with two 
+                    // decimal points
+                    std::string message = "MenuToolVariable.MenuToolVariable"
+                        "(ConsoleOutputHandler* _window, "
+                        "InputHandler* _input_handler, MenuToolItem::"
+                        "StringType _str_type, std::string _cursor_color, "
+                        "std::string _name, std::string _content) -> Attempted"
+                        " to create a Variable of Float type with two "
+                        "decimal points";
+
+                    Debug::log(message, Debug::ERR);
+                    exit(1);
+                }
+            }
+
+            // If the char is not a number
+            else if(c < 48 || c > 57)
+            {
+                // Throw an error, since there can't be a float with letters
+                std::string message = "MenuToolVariable.MenuToolVariable"
+                    "(ConsoleOutputHandler* _window, "
+                    "InputHandler* _input_handler, MenuToolItem::"
+                    "StringType _str_type, std::string _cursor_color, "
+                    "std::string _name, std::string _content) -> Attempted"
+                    " to create a Variable of Float type with alphabetical "
+                    "characters.";
+
+                Debug::log(message, Debug::ERR);
+                exit(0);
+            }
+        }
+    }
+
+    // If the type of the Variable is an int
+    else if(str_type == StringType::INT)
+    {
+        if(default_content.size() == 0) default_content.push_back('0');
+
+        // Set the input handling function to the INT one.
+        targ_input_handling_function = &MenuToolVariable::handle_int_input;
+
+        if(content.size() == 0)
+        {
+            content = default_content;
+            return;
+        }
+
+        // Validate the content parameter by checking if it is filled with only
+        // numbers.
+
+        // Iterate through each char
+        for(char c : content)
+        {
+            if(c == '.')
+            {
+                // Throw an error, since an int can't have a decimal point
+                std::string message = "MenuToolVariable.MenuToolVariable"
+                    "(ConsoleOutputHandler* _window, "
+                    "InputHandler* _input_handler, MenuToolItem::"
+                    "StringType _str_type, std::string _cursor_color, "
+                    "std::string _name, std::string _content) -> Attempted"
+                    " to create a Variable of Int type with a decimal "
+                    "point";
+                
+                Debug::log(message, Debug::ERR);
+                exit(0);
+            }
+
+            // If the char is not a number
+            else if(c < 48 || c > 57)
+            {
+                // Throw an error, since there can't be a float with letters
+                std::string message = "MenuToolVariable.MenuToolVariable"
+                    "(ConsoleOutputHandler* _window, "
+                    "InputHandler* _input_handler, MenuToolItem::"
+                    "StringType _str_type, std::string _cursor_color, "
+                    "std::string _name, std::string _content) -> Attempted"
+                    " to create a Variable of Int type with alphabetical "
+                    "characters.";
+
+                Debug::log(message, Debug::ERR);
+                exit(0);
+            }
+        }
+    }
+
+    // The type of the Variable is a string
+
+    // No validation needs to be done to the content parameter, since all
+    // characters are valid for a STRING type Variable.
+
+    else
+    {
+        // Set the input handling function to the STRING one.
+        targ_input_handling_function = &MenuToolVariable::handle_string_input;
+    }
+
+}
+
 void MenuToolVariable::remove_first_zeros()
 {
+    // There are no trailing zeros since there is only 1 character
+    if(content.size() <= 1) return;
+
     // This function is explicitly for removing preceeding 0s from floats and 
     // ints, so strings don't need to be touched
     if(str_type == STRING) return;
@@ -249,6 +258,7 @@ void MenuToolVariable::remove_first_zeros()
     }
 }
 
+
 MenuToolItem::Status MenuToolVariable::handle_float_input()
 {
     const std::vector<uint32_t>* KEYS = &input_handler->get_raw_keys();
@@ -260,9 +270,8 @@ MenuToolItem::Status MenuToolVariable::handle_float_input()
         {
             case SDLK_RETURN:
 
-                // If the Float is left empty, emplace a 0 so it still contains 
-                // a value
-                if(content.size() == 0) content.push_back('0');
+                // If the content is left empty, set it to default 
+                if(content.size() == 0) content = default_content;
 
                 else remove_first_zeros();
 
@@ -326,7 +335,8 @@ MenuToolItem::Status MenuToolVariable::handle_int_input()
 
                 remove_first_zeros();
 
-                if(content.size() == 0) content.push_back('0');
+                // If the content is left empty, set it to default 
+                if(content.size() == 0) content = default_content;
 
                 input_handler->block_key_until_released(SDLK_RETURN);
                 return HOVERED;

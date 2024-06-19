@@ -4,3 +4,15 @@ Rewrite how sprites work and render
 
 Configure a focus character for the ConsoleOutputHandler
 
+Rewrite Menu and MenuHandler documentation to not include instruction queue
+
+Rewrite areas that use cout to use Debug's log
+
+Fix tab character bugging out COH
+
+Fix the string manipulation of the MenuToolItems so that shift + backspace works properly when
+there is only one character or space existant. Not sure exactly what the error is
+
+Iterate through and update all documentation
+
+Add check for MenuToolVariable default content 

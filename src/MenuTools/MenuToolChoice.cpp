@@ -1,8 +1,6 @@
 #include "MenuToolChoice.h"
 
 
-#include <iostream>
-
 // Constructors / Deconstructor
 
 MenuToolChoice::MenuToolChoice() : MenuToolItem() {}

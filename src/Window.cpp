@@ -13,9 +13,10 @@ Window::Window(uint16_t _start_x, uint16_t _start_y, uint16_t _end_x,
     texture_handler = LSDLE::get_texture_handler();
 
     sprite_handler = new SpriteHandler();
-
-    console_output_handler = new ConsoleOutputHandler(_start_x + border_size, 
-        _start_y + border_size, _end_x - border_size, _end_y - border_size);
+    
+    // Use default constructor just to create the object. Its window size is
+    // updated a few lines down with the resize window command.
+    console_output_handler = new ConsoleOutputHandler();
 
     text_display_handler = console_output_handler->get_text_display_handler();
 
@@ -33,10 +34,10 @@ void Window::render()
 void Window::resize_window(uint16_t _start_x, uint16_t _start_y,
     uint16_t _end_x, uint16_t _end_y)
 {
-    start_x = _start_x;
-    start_y = _start_y;
-    end_x = _end_x;
-    end_y = _end_y;
+    start_x = _start_x + border_size;
+    start_y = _start_y + border_size;
+    end_x = _end_x - border_size;
+    end_y = _end_y - border_size;
 
     console_output_handler->resize_dimensions(start_x, start_y, end_x, end_y);
 }

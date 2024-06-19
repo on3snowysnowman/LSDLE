@@ -40,13 +40,6 @@ void ConsoleOutputHandler::resize_dimensions(uint16_t _start_x, uint16_t _start_
 
     screen_character_height = (end_y - start_y)
         / (font_height * VERTICAL_SPACE_MODIFIER);
-
-    // if(screen_character_width < 30)
-    // {
-    //     Debug::log("ConsoleOutputHandler::ConsoleOutputHandler() : Screen "
-    //     "character width too small (< 30)", Debug::ERR);
-    //     exit(0);
-    // }
 }
 
 void ConsoleOutputHandler::move_cursor(uint16_t x, uint16_t y)

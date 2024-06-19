@@ -14,8 +14,6 @@ void MenuHandler::update()
     if(active_menus.size() > 0) active_menus.front()->update();
 }
 
-#include <iostream>
-
 void MenuHandler::register_menu(Menu* m) 
 {
 

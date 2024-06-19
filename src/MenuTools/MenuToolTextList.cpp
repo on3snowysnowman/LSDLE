@@ -1,7 +1,5 @@
 #include "MenuToolTextList.h"
 
-#include <iostream>
-
 // Constructors / Deconstructor
 
 MenuToolTextList::MenuToolTextList() 
@@ -24,6 +22,7 @@ MenuToolTextList::MenuToolTextList(Window* _window, std::string _cursor_color, s
 void MenuToolTextList::reset()
 {
     cursor_pos = 0;
+    content.clear();
 }
 
 void MenuToolTextList::render_no_status() const

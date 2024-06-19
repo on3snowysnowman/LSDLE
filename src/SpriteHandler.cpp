@@ -22,8 +22,6 @@ SpriteHandler::SpriteHandler()
     texture_handler = LSDLE::get_texture_handler();
 }
 
-
-#include <iostream>
 // Public
 
 void SpriteHandler::render_sprite(Sprite* s, int x, int y)

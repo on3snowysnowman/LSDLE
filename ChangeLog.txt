@@ -1,6 +1,15 @@
 # Version 1.2
 
  CHANGES:
+ 
+ - Added a default content feature to the MenuToolVariable so that it can be
+   specified what to be set to when the content is left empty
+
+ - Added a reset function to the ListSelectionDataContainer and 
+   MenuSelectionDataContainer to call respective reset functions on the 
+   MenuToolItems. Each item has its own logic for "resetting" itself, but
+   generally it is simply clearing their contents or setting the list cursor
+   positions to 0
 
  - Added a function to the ListSelectionDataContainer to quickly get the 
    selected item
